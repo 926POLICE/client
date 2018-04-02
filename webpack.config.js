@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+const history = require('connect-history-api-fallback');
+const convert = require('koa-connect');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -25,7 +27,20 @@ module.exports = {
 					presets: ['react', ["env", { modules: false }]],
 					plugins: ["transform-object-rest-spread"]
 				}
-			}
+			},
+			{
+	            test: /\.less$/,
+	            use: [{
+	                loader: "style-loader" // creates style nodes from JS strings
+	            }, {
+	                loader: "css-loader" // translates CSS into CommonJS
+	            }, {
+	                loader: "less-loader", options: {
+	                    strictMath: true,
+	                    noIeCompat: true
+	                }
+	            }]
+	        }
 		]
 	},
 	plugins: [
@@ -55,4 +70,15 @@ module.exports = {
 	// node: {
 	// 	fs: "empty"
 	// }
+};
+
+module.exports.serve = {
+  content: [__dirname],
+  add: (app, middleware, options) => {
+    const historyOptions = {
+      	index: 'static/index.html'
+    };
+
+    app.use(convert(history(historyOptions)));
+  }
 };

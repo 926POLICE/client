@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import 'less/login.less';
+
 class LoginPage extends React.Component {
     constructor(props) {
         // Check if we need to show the register elements/page
@@ -10,8 +12,6 @@ class LoginPage extends React.Component {
             props.location.state = { display: 'LOGIN' };
         }
         super(props);
-
-        // this.cookies = new Cookies();
 
         this.state = {
             title: '',
@@ -25,7 +25,6 @@ class LoginPage extends React.Component {
             this.state.title = 'Inregistrare';
             this.state.realName = '';
         } else {
-            // this.state.user = this.cookies.get('loginUsername') || '';
             this.state.user = '';
             this.state.title = 'Login';
         }
@@ -33,6 +32,8 @@ class LoginPage extends React.Component {
         this.popoutElem = null;
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
+
+        console.log('BADUMS');
     }
 
     componentDidMount() {
