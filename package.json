@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "npm-run-all --parallel watch:server",
-        "watch:server": "webpack-serve --port 1337 --content static",
+        "start": "npm-run-all --parallel watch:server watch:less",
+        "watch:server": "webpack-serve",
         "watch:build": "webpack --config webpack.config.js --watch --display-error-details",
         "build": "webpack --config webpack.config.js --display-error-details",
         "watch:less": "less-watch-compiler",

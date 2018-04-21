@@ -1,3 +1,34 @@
-body {
-    background: red;
+@import "global.less";
+
+#slide1 {
+    background-color: #ff5454;
+    margin: 0;
+    border-bottom: 1px solid #b3b3b3;
+
+    #loginCnt {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+
+        >div {
+            width: 100%;
+            max-width: 300px;
+            padding: .5rem;
+            background-color: #00000063;
+            border-radius: .6rem;
+
+            * {
+                margin-bottom: .5rem;
+            }
+
+            #title {
+                color: #fff;
+                text-align: center;
+                font-size: 1.25rem;
+                font-weight: bold;
+                letter-spacing: 2px;
+            }
+        }
+    }
 }

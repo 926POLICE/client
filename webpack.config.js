@@ -73,10 +73,11 @@ module.exports = {
 };
 
 module.exports.serve = {
-  content: [__dirname],
+  content: path.join(__dirname, 'static'),
+  port: 1337,
   add: (app, middleware, options) => {
     const historyOptions = {
-      	index: 'static/index.html'
+      	index: 'index.html'
     };
 
     app.use(convert(history(historyOptions)));
