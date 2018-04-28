@@ -11,6 +11,7 @@ export default class PacientsMenu extends React.Component {
         return (
             <Menu>
                 <MenuItem to='/board/pacients/donate' display='DONATE'>Doneaza</MenuItem>
+                {/* <MenuItem to='/board/pacients/template' display='TEMPLATE'>Template</MenuItem> */}
             </Menu>
         )
     }

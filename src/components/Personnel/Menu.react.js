@@ -13,6 +13,7 @@ export default class PersonnelMenu extends React.Component {
                 <MenuItem to='/board/personnel/bloodstocks' display='BLOODSTOCKS'>Blood stocks</MenuItem>
                 <MenuItem to='/board/personnel/bloodstocks' display='BLOODSTOCKS'>Menu 1</MenuItem>
                 <MenuItem to='/board/personnel/bloodstocks' display='BLOODSTOCKS'>Menu 2</MenuItem>
+                {/* <MenuItem to='/board/personnel/template' display='TEMPLATE'>Template</MenuItem> */}
             </Menu>
         )
     }

@@ -22,6 +22,8 @@ export default class App extends React.Component {
 				<Route exact path="/board/personnel" component={BoardIndexPage}/>
 				<Route exact path="/board/personnel/bloodstocks" component={BoardIndexPage}/>
 
+				<Route exact path="/board/[SECTION]/[NAME]" component={BoardIndexPage}/>
+
 				<Redirect from='*' to='/' />
 			</Switch>
 		);
