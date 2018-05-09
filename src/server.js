@@ -1,6 +1,14 @@
 import path from 'path';
 import http from 'http';
 import Express from 'express';
+import Helmet from 'react-helmet';
+
+import React from 'react';
+import { match, RouterContext } from 'react-router';
+import ReactDOMServer from 'react-dom/server'
+import { StaticRouter, Redirect } from 'react-router'
+
+import App from 'app';
 
 const app = new Express(); // Initialize Express variable
 app.set('view engine', 'ejs'); // Setting up the view engine
@@ -9,8 +17,19 @@ app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
-    // render the index template with the embedded React markup
-    return res.render('index');
+    const context = {}
+
+    const markup = ReactDOMServer.renderToString(
+        <StaticRouter
+            location={req.url}
+            context={context}>
+            <App/>
+        </StaticRouter>
+    );
+
+    const helmet = Helmet.renderStatic();
+
+    return res.render('index', { markup: markup, helmet: helmet });
 });
 
 const server = new http.Server(app); // Create a server through Express

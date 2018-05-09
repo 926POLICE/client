@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 
+import Helmet from 'react-helmet';
+
 import LibraryLoader from 'utils/LibraryLoader'
 
 class IndexPage extends React.Component {
@@ -11,12 +13,14 @@ class IndexPage extends React.Component {
     }
     
     componentDidMount() {
-        this.libraryLoader.loadCSS('css/index.min.css');
     }
     
     render() {
-        return (
-            <div id="rootCnt">
+        return [
+            <Helmet key="helmet">
+                <link rel="stylesheet" href="css/index.min.css"/>
+            </Helmet>,
+            <div key="main" id="rootCnt">
                 <div id="slide1" className="row">
                     <div className="col-12 col-lg-8"></div>
                     <div id="loginCnt" className="col-12 col-lg-4">
@@ -28,7 +32,7 @@ class IndexPage extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        ]
     }
 };
 

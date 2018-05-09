@@ -5,3 +5,67 @@
     height: 100%;
     background-color: #ff5454;
 }
+
+#rootCnt > div {
+    max-width: 500px;
+    width: 100%;
+    position: absolute;
+    left: calc(50% - 200px);
+    top: 20%;
+    padding: .5rem 1rem;
+    background-color: #00000063;
+    border-radius: .6rem;
+
+    .title {
+        text-align: center;
+        font-size: 2rem;
+        color: #fff;
+        font-weight: bold;
+        letter-spacing: .3rem;
+    }
+
+    > div {
+        margin: .5rem 0;
+
+        .row {
+            align-items: center;
+
+            > div:first-child {
+                color: #fff;
+                font-size: 1.2rem;
+            }
+        }
+
+        > .info:last-child {
+            color: #fff;
+        }
+    }
+
+    > .miniTitle {
+        color: #fff;
+        margin-top: 1rem;
+        font-size: 1.1rem;
+    }
+
+    > #registerBtns {
+        margin-top: 1rem;
+
+        > div {
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+    
+    .is-good {
+        background-color: #98ff97;
+    }
+
+    .is-bad {
+        background-color: #ff9797;
+    }
+}
