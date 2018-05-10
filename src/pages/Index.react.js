@@ -27,6 +27,10 @@ class IndexPage extends React.Component {
                         <div>
                             <div id="title">I want to donate blood!</div>
                             <Link className="btn btn-block btn-danger" to='/register'>Register</Link>
+                            <br/>
+                            <div id="title">Login</div>
+                            <input type="text" className="form-control" placeholder="Name"/>
+                            <input type="text" className="form-control" placeholder="Password"/>
                             <input type="button" value="Login" className="btn btn-block btn-primary"/>
                         </div>
                     </div>

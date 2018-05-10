@@ -17,6 +17,11 @@ class RegisterPage extends React.Component {
         
         this.checkField = this.checkField.bind(this);
         this.onRegister = this.onRegister.bind(this);
+
+        this.fieldsNames = [
+            'firstName', 'lastName', 'address', 'pass', 'passAgain', 'birthdateDay', 'birthdateMonth', 'birthdateYear',
+            'cityName', 'countryName'
+        ]
     }
     
     componentDidMount() {
@@ -33,13 +38,11 @@ class RegisterPage extends React.Component {
     }
 
     onRegister() {
-        if (
-            !this.checkField('firstName') ||
-            !this.checkField('lastName')  ||
-            !this.checkField('address') 
-        ) {
-            this.setState(this.state);
-            return;
+        for (var i=0, length = this.fieldsNames.length; i < length; ++i) {
+            if (!this.checkField(this.fieldsNames[i])) {
+                this.setState(this.state);
+                return;
+            }
         }
 
         AjaxUtils.request('POST', serverUrls.donors.register, {
@@ -60,13 +63,14 @@ class RegisterPage extends React.Component {
             })
     }
 
-    renderInput(stateVar) {
+    renderInput(stateVar, placeholder) {
         return (
             <input 
                 type="text" 
                 className={`form-control ${this.state[stateVar + 'Class'] || ''}`} 
                 value={this.state[stateVar] || ''} 
                 onChange={e => { this.state[stateVar] = e.target.value; this.setState(this.state) }}
+                placeholder={placeholder}
             />
         )
     }
@@ -107,13 +111,13 @@ class RegisterPage extends React.Component {
                             <div className="col-9">
                                 <div className="row">
                                     <div className="col-4">
-                                        <input type="text" className="form-control" placeholder="dd"/>
+                                        { this.renderInput('birthdateDay', 'dd') }
                                     </div>
                                     <div className="col-4">
-                                        <input type="text" className="form-control" placeholder="mm"/>
+                                    { this.renderInput('birthdateMonth', 'mm') }
                                     </div>
                                     <div className="col-4">
-                                        <input type="text" className="form-control" placeholder="yyyy"/>
+                                    { this.renderInput('birthdateYear', 'yyyy') }
                                     </div>
                                 </div>
                             </div>
