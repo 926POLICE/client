@@ -9,6 +9,14 @@ class DoctorRequestsStatusPage extends React.Component {
         super(props);
 
         this.state = {
+            data: [{
+                "patientID": 1,
+                "redBloodCellsQuantity": 20,
+                "plasmaQuantity": 10,
+                "thrombocytesQuantity": 30,
+                "priority": true,
+                "completed": true
+            }]
 
         }
     }
@@ -16,7 +24,14 @@ class DoctorRequestsStatusPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        // Initial Ajax requests
+        AjaxUtils.request('GET', '/api/requests', undefined)
+            .then(data => {
+                // the data is the response given by the server if all is alright
+            })
+            .catch(error => {
+                // Here you catch the errors(print out the error variable)
+                console.error(error);
+            })
     }
 
     render() {
@@ -26,28 +41,36 @@ class DoctorRequestsStatusPage extends React.Component {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Pacient</th>
-                            <th>TQuantity</th>
-                            <th>RQuantity</th>
-                            <th>PQuantity</th>
+                            <th>PacientID</th>
+                            <th>Red Blood Cells Quantity</th>
+                            <th>Plasma Quantity</th>
+                            <th>Thrombocytes Quantity</th>
                             <th>Priority</th>
                             <th>Completed</th>
                         </tr>
                     </thead>
+
+                    <tbody>
+                        {this.state.data.map((row, index) => {
+                            return (
+                                <tr key={`r${index}`}>
+                                    <td>{row.patientID}</td>
+                                    <td>{row.redBloodCellsQuantity}</td>
+                                    <td>{row.plasmaQuantity}</td>
+                                    <td>{row.thrombocytesQuantity}</td>
+                                    <td>{row.priority.toString()}</td>
+                                    <td>{row.completed.toString()}</td>
+                                </tr>
+                            )
+                        })}
+
+                    </tbody>
+
                 </table>
             </div>
         )
     }
 };
 
-AjaxUtils.request('GET', '/api/requests', undefined)
-    .then(data => {
-        // the data is the response given by the server if all is alright
-    })
-    .catch(error => {
-        // Here you catch the errors(print out the error variable)
-        console.error(error);
-    })
 
 export default withRouter(DoctorRequestsStatusPage);

@@ -9,6 +9,15 @@ class DoctorAvailableStocksPage extends React.Component {
         super(props);
 
         this.state = {
+            data: [{
+                "collectionDate": "12 - 12 - 2017",
+                "quantity": 10,
+                "state": 1,
+                "type": "type",
+                "shelfLife": 1,
+                "donationID": 12,
+                "clinicID": 12
+            }]
 
         }
     }
@@ -16,7 +25,12 @@ class DoctorAvailableStocksPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        // Initial Ajax requests
+        AjaxUtils.request('GET', '/api/bloodStocks', undefined)
+            .then(data => {
+                    self.state.data = data;
+                    self.setState(self.state);
+              
+            })
     }
 
     render() {
@@ -26,33 +40,37 @@ class DoctorAvailableStocksPage extends React.Component {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Pacient</th>
-                            <th>TQuantity</th>
-                            <th>RQuantity</th>
-                            <th>PQuantity</th>
-                            <th>Priority</th>
-                            <th>Completed</th>
+                            <th>Date of Collection</th>
+                            <th>Quantity</th>
+                            <th>State</th>
+                            <th>Type</th>
+                            <th>Shelf Life</th>
+                            <th>DonationID</th>
+                            <th>ClinicID</th>
                         </tr>
                     </thead>
+
+                      <tbody>
+                        {this.state.data.map((row, index) => {
+                            return (
+                                <tr key={`r${index}`}>
+                                    <td>{row.collectionDate}</td>
+                                    <td>{row.quantity}</td>
+                                    <td>{row.state}</td>
+                                    <td>{row.type}</td>
+                                    <td>{row.shelfLife}</td>
+                                    <td>{row.donationID}</td>
+                                    <td>{row.clinicID}</td>
+                                </tr>
+                            )
+                        })}
+
+                    </tbody>
                 </table>
             </div>
         )
     }
 };
 
-AjaxUtils.request('GET', '/api/requests', undefined)
-    .then(data => {
-        // the data is the response given by the server if all is alright
-    })
-    .catch(error => {
-        // Here you catch the errors(print out the error variable)
-        console.error(error);
-    })
 
 export default withRouter(DoctorAvailableStocksPage);
-
-{/*// See blood stocks
-// Returns a list of ready-to-use blood containers (that have been previously tested and that didn't expire).
-@RequestMapping(value = "/bloodStocks", method = RequestMethod.GET)
-List<BloodDTO> getBloodStocks();*/}

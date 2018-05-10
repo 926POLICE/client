@@ -17,7 +17,7 @@ class DoctorsIndexPage extends React.Component {
 			props.location.state = { display: 'TEMPLATE' };
 		} else if (props.location.pathname.startsWith('/board/doctors/requests')) { // copy and modify this as required
 			props.location.state = { display: 'REQUESTS' };
-		} else if (props.location.pathname.startsWith('/board/doctors/stocks')) { // copy and modify this as required
+		} else if (props.location.pathname.startsWith('/board/doctors/bloodstocks')) { // copy and modify this as required
 			props.location.state = { display: 'STOCKS' };
 		} else {
             props.location.state = { display: null };

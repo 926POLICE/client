@@ -11,37 +11,24 @@ class PacientAnalysisHistoryPage extends React.Component {
 
         //an array of donations
         this.state = {
-            contacts: [],
-            isLoading: true,
-            donations: [{
-                "id": 1,
-                "blood": "blood",
-                "pacient": "pacient",
-                "analysisResult": "result"
+            data: [{
+                "patientID": 1,
+                "analysisResult": true,
+                "clinicID": 12
             }],
-            donation: {
-                "id": 0,
-                "blood": "",
-                "pacient": "",
-                "analysisResult": ""
-            }
+
         }
     }
 
     componentDidMount() {
-        AjaxUtils.request('GET', '/api/donors/history/{donorID}', undefined)
-            .then(response => response.json())
-            .then(parsedJson => console.log(parsedJson.results)
-            //.map(donation => {
-                //user: `${donation.name.first}`
-                //id: `${donation.id}`
-                //blood: `${donation.blood}`
-                //pacient: `${donation.patient}`
-                //analysisResult: `${donation.analysisResult}`
-            //}))
-            //.then(donations => this.setState({ donations, isLoading: false }))
-            .catch(error => console.log('parsing failed', error)))
-        //this.fetchData();
+
+        AjaxUtils.request('GET', '/api/donors/history/{donorID}')
+            .then(data => {
+                self.state.data = data;
+                self.setState(self.state);
+            })
+
+        
 
     }
 
@@ -70,24 +57,22 @@ class PacientAnalysisHistoryPage extends React.Component {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Blood</th>
-                            <th>Pacient</th>
+                            <th>PatientID</th>
                             <th>AnalysisResult</th>
-                        </tr> 
+                            <th>ClinicID</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        {this.state.donations.map((row, index) => {
+                        {this.state.data.map((row, index) => {
                             return (
                                 <tr key={`r${index}`}>
-                                    <td>{row.id}</td>
-                                    <td>{row.blood}</td>
-                                    <td>{row.pacient}</td>
-                                    <td>{row.analysisResult}</td>
+                                    <td>{row.patientID}</td>
+                                    <td>{row.analysisResult.toString()}</td>
+                                    <td>{row.clinicID}</td>
                                 </tr>
                             )
                         })}
-                    
+
                     </tbody>
                 </table>
             </div>
