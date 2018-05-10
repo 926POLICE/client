@@ -1,16 +1,27 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import LibraryLoader from 'utils/LibraryLoader';
+import LibraryLoader from 'utils/LibraryLoader'
 import AjaxUtils from 'utils/AjaxUtils.js';
-import DonateBloodPageReact from './DonateBloodPage.react';
+import PacientSettingsPageReact from './PacientSettingsPage.react';
+import RegisterPage from './RegisterPage.react.js'
 
-class PacientSettingsPage extends React.Component {
+class DonateBloodPage extends React.Component {
     constructor(props) {
         super(props);
-        let { firstName, lastName, day, month, year, address, city_town, country, residence_address, residence_city_town, residence_country } = this.props
-        console.log('settings ' + this.props);
-
+        var props = {
+            firstName: "",
+            lastName: "",
+            day: "",
+            month: "",
+            year: "",
+            address: "",
+            city_town: "",
+            country: "",
+            residence_address: "",
+            residence_city_town: "",
+            residence_country: "",
+        }
         this.state = {
             firstName: "",
             lastName: "",
@@ -41,36 +52,16 @@ class PacientSettingsPage extends React.Component {
     }
 
 
+
     componentDidMount() {
-        {/*const self = this;
-
-        AjaxUtils.request('PUT', '/api/donors/{donorID}', undefined)
-            .then(data => {
-
-            })
-            .catch(error => {
-                // Here you catch the errors(print out the error variable)
-                console.error(error);
-            })
-
-        AjaxUtils.request('GET', '/api/donors/{donorID}', undefined)
-            .then(data => {
-                self.state.data = data;
-                self.setState(self.state);
-
-            })
-            .catch(error => {
-                // Here you catch the errors(print out the error variable)
-                console.error(error);
-            })*/}
-
+        const self = this;
     }
 
 
     render() {
         return (
             <div id="mainCnt">
-                <div id="title">SETTINGS</div>
+                <div id="title">DONATE</div>
                 <form id="submitForm" onSubmit={this.handleSubmitButton}>
 
                     <label>
@@ -217,9 +208,6 @@ class PacientSettingsPage extends React.Component {
 
         event.preventDefault();
     }
-
 };
 
-
-
-export default withRouter(PacientSettingsPage);
+export default withRouter(DonateBloodPage);

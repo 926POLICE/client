@@ -4,7 +4,10 @@ import { withRouter } from 'react-router-dom';
 import LibraryLoader from 'utils/LibraryLoader'
 
 import Menu from 'components/Doctors/Menu.react.js';
+import DoctorRequestsStatusPage from 'pages/doctors/DoctorRequestsStatusPage.react';
+import DoctorAvailableStocksPage from 'pages/doctors/DoctorAvailableStocksPage.react';
 // here add the next pages
+
 
 class DoctorsIndexPage extends React.Component {
     constructor(props) {
@@ -12,6 +15,10 @@ class DoctorsIndexPage extends React.Component {
 			props.location.state = { display: 'PAGE' };
 		} else if (props.location.pathname.startsWith('/board/doctors/TEMPLATE')) { // copy and modify this as required
 			props.location.state = { display: 'TEMPLATE' };
+		} else if (props.location.pathname.startsWith('/board/doctors/requests')) { // copy and modify this as required
+			props.location.state = { display: 'REQUESTS' };
+		} else if (props.location.pathname.startsWith('/board/doctors/stocks')) { // copy and modify this as required
+			props.location.state = { display: 'STOCKS' };
 		} else {
             props.location.state = { display: null };
         }
@@ -34,7 +41,12 @@ class DoctorsIndexPage extends React.Component {
 			case 'PAGE':
                 // displayBlock = <DonateBloodPage libraryLoader={this.libraryLoader}/>;
                 break;
-
+            case 'REQUESTS':
+                displayBlock = <DoctorRequestsStatusPage libraryLoader={this.libraryLoader}/>;
+                break;
+            case 'STOCKS':
+                displayBlock = <DoctorAvailableStocksPage libraryLoader={this.libraryLoader}/>;
+                break;
             // also add the page here (don't forget the break)
             // case 'TEMPLATE':
             //     displayBlock = <TemplatePageName libraryLoader={this.libraryLoader}/>;
