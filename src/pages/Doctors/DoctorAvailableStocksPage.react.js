@@ -25,7 +25,7 @@ class DoctorAvailableStocksPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        AjaxUtils.request('GET', '/api/bloodStocks', undefined)
+        AjaxUtils.request('GET', 'http://localhost:8080/api/bloodstocks', undefined)
             .then(data => {
                     self.state.data = data;
                     self.setState(self.state);

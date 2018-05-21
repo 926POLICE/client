@@ -24,13 +24,12 @@ class DoctorRequestsStatusPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        AjaxUtils.request('GET', '/api/requests', undefined)
+        //checkRequestStatus(Integer pacientID sau String pacientName) : String 
+
+        AjaxUtils.request('GET', 'http://localhost:8080/api/checkRequestStatus/{pacientID}', undefined)
             .then(data => {
-                // the data is the response given by the server if all is alright
-            })
-            .catch(error => {
-                // Here you catch the errors(print out the error variable)
-                console.error(error);
+                self.state.data = data;
+                self.setState(self.state);
             })
     }
 

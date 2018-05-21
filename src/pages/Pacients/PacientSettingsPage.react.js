@@ -42,27 +42,6 @@ class PacientSettingsPage extends React.Component {
 
 
     componentDidMount() {
-        {/*const self = this;
-
-        AjaxUtils.request('PUT', '/api/donors/{donorID}', undefined)
-            .then(data => {
-
-            })
-            .catch(error => {
-                // Here you catch the errors(print out the error variable)
-                console.error(error);
-            })
-
-        AjaxUtils.request('GET', '/api/donors/{donorID}', undefined)
-            .then(data => {
-                self.state.data = data;
-                self.setState(self.state);
-
-            })
-            .catch(error => {
-                // Here you catch the errors(print out the error variable)
-                console.error(error);
-            })*/}
 
     }
 
@@ -199,8 +178,8 @@ class PacientSettingsPage extends React.Component {
             this.state.residence_country
         );
 
-        AjaxUtils.request('POST', '/api/donations', {
-            body: JSON.stringify({
+        AjaxUtils.request('POST', 'http://localhost:8080/donors/updatePersonalDetails', {
+            //body: JSON.stringify({
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 day: this.state.day,
@@ -212,7 +191,14 @@ class PacientSettingsPage extends React.Component {
                 residence_address: this.state.residence_address,
                 residence_city_town: this.state.residence_city_town,
                 residence_country: this.state.residence_country
-            })
+            //})
+        })
+        .then(() => {
+            alert("UPDATE SETTINGS WORKS");
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error);
         })
 
         event.preventDefault();

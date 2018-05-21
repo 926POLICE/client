@@ -22,19 +22,16 @@ class PacientAnalysisHistoryPage extends React.Component {
 
     componentDidMount() {
 
-        AjaxUtils.request('GET', '/api/donors/history/{donorID}')
+        AjaxUtils.request('GET', '/api/donors/getAnalysisHistory/{donorID}')
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);
             })
-
-        
-
     }
 
-
+    
     fetchData() {
-        fetch('/api/history')
+        fetch('/api/donors/getAnalysisHistory/{donorID}')
             .then(response => response.json())
             .then(parsedJson => parsedJson.results.map(donation => {
                 id: `${donation.id}`
@@ -49,7 +46,7 @@ class PacientAnalysisHistoryPage extends React.Component {
 
 
     render() {
-        this.fetchData();
+        //this.fetchData();
         return (
             <div id="mainCnt">
                 <div id="title">ANALYSIS HISTORY</div>
@@ -79,14 +76,5 @@ class PacientAnalysisHistoryPage extends React.Component {
         )
     }
 };
-
-AjaxUtils.request('GET', '/api/history', undefined)
-    .then(data => {
-        // the data is the response given by the server if all is alright
-    })
-    .catch(error => {
-        // Here you catch the errors(print out the error variable)
-        console.error(error);
-    })
 
 export default withRouter(PacientAnalysisHistoryPage);
