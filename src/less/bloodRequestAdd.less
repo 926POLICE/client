@@ -1,0 +1,55 @@
+.btn-selectable {
+    margin-right: .5rem;
+}
+
+.btn-selected {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    
+}
+
+.btn-notselected {
+    background-color: #fff;
+    border-color: #c1c1c1;
+}
+
+.stepTitle {
+    font-weight: bold;
+    font-size: 1.1rem;
+
+    &:not(:first-child) {
+        margin-top: .5rem;
+    }
+}
+
+#buttonCnt {
+    display: flex;
+
+    > *:first-child {
+        margin-right: 1rem;
+    }
+}
+
+tbody {
+    tr {
+        background-color: #f9f9f9 !important;
+        cursor: pointer;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #cacaca;
+        }
+
+        &:hover {
+            background-color: #dadada !important;
+        }
+    }
+
+    .selected {
+        background-color: #889bff !important;
+
+        &:hover {
+            background-color: #889bff !important;
+        }
+    }
+}

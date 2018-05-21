@@ -16,6 +16,23 @@ app.set('views', path.join(__dirname, '..', 'views')); // Setting up the views f
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // universal routing and rendering
+app.get('/board/*', (req, res) => {
+    const context = {}
+
+    const markup = ReactDOMServer.renderToString(
+        <StaticRouter
+            location={req.url}
+            context={context}>
+            <App/>
+        </StaticRouter>
+    );
+
+    const helmet = Helmet.renderStatic();
+
+    return res.render('board', { markup: markup, helmet: helmet });
+});
+
+// universal routing and rendering
 app.get('*', (req, res) => {
     const context = {}
 

@@ -23,10 +23,6 @@ class BoardIndexPage extends React.Component {
         this.libraryLoader = new LibraryLoader();
     }
 
-    componentDidMount() {
-        this.libraryLoader.loadCSS('/css/board.min.css');
-    }
-    
     render() {
         return this.displayBlock && <this.displayBlock/>
     }

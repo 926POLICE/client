@@ -36,15 +36,22 @@
     padding: 1rem;
     flex: 1;
     border-radius: .5rem;
+}
 
-    > #title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: .5rem;
-    }
+#title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+
+#topBar {
+    display: flex;
+    justify-content: space-between;
 }
 
 table {
+    width: 100%;
+    
     thead {
         tr {
             background-color: #3b4a9c;
@@ -91,4 +98,12 @@ table {
             }
         }
     }
+}
+
+.notificationCnt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0;
 }

@@ -19,8 +19,7 @@ class RegisterPage extends React.Component {
         this.onRegister = this.onRegister.bind(this);
 
         this.fieldsNames = [
-            'firstName', 'lastName', 'address', 'pass', 'passAgain', 'birthdateDay', 'birthdateMonth', 'birthdateYear',
-            'cityName', 'countryName'
+            'name', 'pass', 'passAgain', 'address', 'birthDate', 'cityName', 'countryName'
         ]
     }
     
@@ -63,14 +62,14 @@ class RegisterPage extends React.Component {
             })
     }
 
-    renderInput(stateVar, placeholder) {
+    renderInput(data) {
         return (
             <input 
-                type="text" 
-                className={`form-control ${this.state[stateVar + 'Class'] || ''}`} 
-                value={this.state[stateVar] || ''} 
-                onChange={e => { this.state[stateVar] = e.target.value; this.setState(this.state) }}
-                placeholder={placeholder}
+                type={data.type || "text"} 
+                className={`form-control ${this.state[data.stateVar + 'Class'] || ''}`} 
+                value={this.state[data.stateVar] || ''} 
+                onChange={e => { this.state[data.stateVar] = e.target.value; this.setState(this.state) }}
+                placeholder={data.placeholder}
             />
         )
     }
@@ -79,9 +78,9 @@ class RegisterPage extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-3">{data.name}:</div>    
+                    <div className="col-3">{data.title}:</div>    
                     <div className="col-9">
-                        { this.renderInput(data.stateVar) }
+                        { this.renderInput(data.inputData) }
                     </div>
                 </div>
                 {
@@ -99,43 +98,29 @@ class RegisterPage extends React.Component {
                 <link rel="stylesheet" href="css/register.min.css"/>
             </Helmet>,
             <div key="main" id="rootCnt">
-                <div>
-                    <div className="title">Register</div>
-                    { this.renderField({ name: 'First name', stateVar: 'firstName' }) }
-                    { this.renderField({ name: 'Last name', stateVar: 'lastName' }) }
-                    { this.renderField({ name: 'Password', stateVar: 'pass' }) }
-                    { this.renderField({ name: 'Password again', stateVar: 'passAgain' }) }
-                    <div>
-                        <div className="row">
-                            <div className="col-3">Birth date:</div>    
-                            <div className="col-9">
-                                <div className="row">
-                                    <div className="col-4">
-                                        { this.renderInput('birthdateDay', 'dd') }
-                                    </div>
-                                    <div className="col-4">
-                                    { this.renderInput('birthdateMonth', 'mm') }
-                                    </div>
-                                    <div className="col-4">
-                                    { this.renderInput('birthdateYear', 'yyyy') }
-                                    </div>
+                <div className="row">
+                    <div className="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        <div id="registerCnt">
+                            <div className="title">Register</div>
+                            { this.renderField({ title: 'Name', inputData: { stateVar: 'name' } }) }
+                            { this.renderField({ title: 'Password', inputData: { stateVar: 'pass' } }) }
+                            { this.renderField({ title: 'Password again', inputData: { stateVar: 'passAgain' } }) }
+                            { this.renderField({ title: 'Birth date', inputData: { stateVar: 'birthDate', type: "date" } }) }
+                            { this.renderField({ title: 'Address', info: '(address from your ID card)', inputData: { stateVar: 'address' } }) }
+                            { this.renderField({ title: 'City/Town', inputData: { stateVar: 'cityName' } }) }
+                            { this.renderField({ title: 'Country', inputData: { stateVar: 'countryName' } }) }
+                            <div className="miniTitle">If you leave in another address than that in your ID card:</div>
+                            { this.renderField({ title: 'Residence', inputData: { stateVar: 'residenceAddress' } }) }
+                            { this.renderField({ title: 'City/Town', inputData: { stateVar: 'residenceCityName' } }) }
+                            { this.renderField({ title: 'Country', inputData: { stateVar: 'residenceCountryName' } }) }
+                            <div className="row" id="registerBtns">
+                                <div className="col-12 col-md-6">
+                                    <Link to='/' className="btn btn-block btn-warning">Back</Link>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <button className="btn btn-block btn-danger" onClick={this.onRegister}>Register</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    { this.renderField({ name: 'Address', info: '(address from your ID card)', stateVar: 'address' }) }
-                    { this.renderField({ name: 'City/Town', stateVar: 'cityName' }) }
-                    { this.renderField({ name: 'Country', stateVar: 'countryName' }) }
-                    <div className="miniTitle">If you leave in another address than that in your ID card:</div>
-                    { this.renderField({ name: 'Residence', stateVar: 'residenceAddress' }) }
-                    { this.renderField({ name: 'City/Town', stateVar: 'residenceCityName' }) }
-                    { this.renderField({ name: 'Country', stateVar: 'residenceCountryName' }) }
-                    <div className="row" id="registerBtns">
-                        <div className="col-12 col-md-6">
-                            <Link to='/' className="btn btn-block btn-warning">Back</Link>
-                        </div>
-                        <div className="col-12 col-md-6">
-                            <button className="btn btn-block btn-danger" onClick={this.onRegister}>Register</button>
                         </div>
                     </div>
                 </div>

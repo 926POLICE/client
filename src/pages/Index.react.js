@@ -35,6 +35,12 @@ class IndexPage extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div id="content">
+                    wefwef
+                </div>
+                <div id="footer">
+                    wefwef
+                </div>
             </div>
         ]
     }
