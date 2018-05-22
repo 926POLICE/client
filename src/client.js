@@ -6,7 +6,7 @@ import App from 'app';
 console.log(App);
 
 window.onload = () => {
-    ReactDOM.render((
+    ReactDOM.hydrate((
         <BrowserRouter>
             <App/>
         </BrowserRouter>

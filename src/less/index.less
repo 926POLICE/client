@@ -1,9 +1,27 @@
 @import "global.less";
 
+#rootCnt {
+    display: flex;
+    flex-direction: column;
+
+    > div:not(:last-child) {
+        border-bottom: 1px solid #b3b3b3;
+    }
+}
+
+#content {
+    flex: 1;
+}
+
+#footer {
+    display: flex;
+    background-color: #ff5454;
+    padding: 2rem;
+}
+
 #slide1 {
     background-color: #ff5454;
     margin: 0;
-    border-bottom: 1px solid #b3b3b3;
 
     #loginCnt {
         padding: 0;
@@ -31,4 +49,13 @@
             }
         }
     }
+}
+
+.notificationCnt {
+    position: absolute;
+    top: 35px;
+    left: calc(50% - 250px);
+    width: 500px;
+    text-align: center;
+    box-shadow: 3px 2px 22px #525252;
 }

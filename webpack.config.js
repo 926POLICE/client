@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
-const history = require('connect-history-api-fallback');
-const convert = require('koa-connect');
+// const history = require('connect-history-api-fallback');
+// const convert = require('koa-connect');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -72,14 +72,18 @@ module.exports = {
 	// }
 };
 
-module.exports.serve = {
-  content: path.join(__dirname, 'static'),
-  port: 1337,
-  add: (app, middleware, options) => {
-    const historyOptions = {
-      	index: 'index.html'
-    };
+// module.exports.serve = {
+//   content: path.join(__dirname, 'static'),
+//   port: 1337,
+//   add: (app, middleware, options) => {
+//     const historyOptions = {
+// 		index: 'index.html',
+// 		rewrites: [
+// 			{ from: '/register', to: 'register.html' },
+// 			{ from: '/board/*', to: 'board.html' }
+// 		]
+//     };
 
-    app.use(convert(history(historyOptions)));
-  }
-};
+//     app.use(convert(history(historyOptions)));
+//   }
+// };
