@@ -6,6 +6,8 @@ import IndexPage from 'pages/Index.react';
 import RegisterPage from 'pages/Register.react';
 import BoardIndexPage from 'pages/BoardIndex.react';
 
+import TestAPIPage from 'pages/TestAPI.react';
+
 export default class App extends React.Component {
 	render() {
 		return (
@@ -15,20 +17,19 @@ export default class App extends React.Component {
 				<Route exact path="/register" component={RegisterPage}/>
 
 				<Route exact path="/board/doctors" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/bloodRequests" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/bloodRequests/add" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/requests" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/bloodrequests" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/bloodrequests/add" component={BoardIndexPage}/>
 				<Route exact path="/board/doctors/bloodstocks" component={BoardIndexPage}/>
 
-				<Route exact path="/board/pacients" component={BoardIndexPage}/>
-				<Route exact path="/board/pacients/donate" component={BoardIndexPage}/>
-				<Route exact path="/board/pacients/settings" component={BoardIndexPage}/>
-				<Route exact path="/board/pacients/history" component={BoardIndexPage}/>
+				<Route exact path="/board/donors" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/donate" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/settings" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/history" component={BoardIndexPage}/>
 
 				<Route exact path="/board/personnel" component={BoardIndexPage}/>
 				<Route exact path="/board/personnel/bloodstocks" component={BoardIndexPage}/>
 
-				<Route exact path="/board/[SECTION]/[NAME]" component={BoardIndexPage}/>
+				<Route exact path="/testapi" component={TestAPIPage}/>
 
 				<Redirect from='*' to='/' />
 			</Switch>

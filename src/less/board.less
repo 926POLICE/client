@@ -107,3 +107,37 @@ table {
     width: 100%;
     border-radius: 0;
 }
+
+.fade-in {
+    opacity: 0;
+}
+.fade-in.visible {
+    transition: opacity 1s ease-in;
+    opacity: 1;
+}
+
+#registerCnt {
+    width: 100%;
+
+    .row {
+        align-items: center;
+        margin-bottom: .5rem;
+    }
+    
+    > .miniTitle {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+    }
+
+    > #registerBtns {
+        margin-top: 1rem;
+    }
+    
+    .is-good {
+        background-color: #98ff97;
+    }
+
+    .is-bad {
+        background-color: #ff9797;
+    }
+}

@@ -1,8 +1,13 @@
 @import "global.less";
 
+#main {
+    height: 100%;
+}
+
 #rootCnt {
     display: flex;
     flex-direction: column;
+    height: 100%;
 
     > div:not(:last-child) {
         border-bottom: 1px solid #b3b3b3;
@@ -16,7 +21,9 @@
 #footer {
     display: flex;
     background-color: #ff5454;
-    padding: 2rem;
+    padding: .5rem;
+    flex-direction: column;
+    align-items: center;
 }
 
 #slide1 {

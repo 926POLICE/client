@@ -34,7 +34,8 @@ class IndexPage extends React.Component {
         this.props.history.push({
             pathname: "/board/doctors/bloodRequests/add",
             state: {
-                userID: 10
+                userID: 10,
+                refresh: true
             }
         })
 
@@ -62,7 +63,8 @@ class IndexPage extends React.Component {
                     self.props.history.push({
                         pathname: url,
                         state: {
-                            userID: data[serverUrl.login.fields.id]
+                            userID: data[serverUrl.login.fields.id],
+                            refresh: true
                         }
                     })
                 }
@@ -118,10 +120,11 @@ class IndexPage extends React.Component {
                     </div>
                 </div>
                 <div id="content">
-                    wefwef
+                    Meaningful content right here
                 </div>
                 <div id="footer">
-                    wefwef
+                    <div>Created by</div>
+                    <div>Ratiu Cosmina, Iulia Robas, Lung Andreea, Popa Catalin, Prisacariu Alexandru, Muscala Andrei</div>
                 </div>
             </div>
         ]

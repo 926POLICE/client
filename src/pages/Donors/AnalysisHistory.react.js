@@ -1,9 +1,12 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 import LibraryLoader from 'utils/LibraryLoader';
 import AjaxUtils from 'utils/AjaxUtils.js';
 import Collapsible from 'react-collapsible';
+
+import serverUrls from 'data/serverUrls';
 
 class PacientAnalysisHistoryPage extends React.Component {
     constructor(props) {
@@ -11,46 +14,36 @@ class PacientAnalysisHistoryPage extends React.Component {
 
         //an array of donations
         this.state = {
-            data: [{
-                "patientID": 1,
-                "analysisResult": true,
-                "clinicID": 12
-            }],
-
+            data: [
+                {
+                    "patientID": 1,
+                    "analysisResult": true,
+                    "clinicID": 12
+                }
+            ]
         }
     }
 
     componentDidMount() {
-
-        AjaxUtils.request('GET', '/api/donors/getAnalysisHistory/{donorID}')
+        const self = this;
+        AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory, { donorID: this.props.userID })
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);
             })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
     }
-
-    
-    fetchData() {
-        fetch('/api/donors/getAnalysisHistory/{donorID}')
-            .then(response => response.json())
-            .then(parsedJson => parsedJson.results.map(donation => {
-                id: `${donation.id}`
-                blood: `${donation.blood}`
-                pacient: `${donation.patient}`
-                analysisResult: `${donation.analysisResult}`
-            }))
-            .then(donations => this.setState({ donations, isLoading: false }))
-            .catch(error => console.log('parsing failed', error))
-    }
-
-
 
     render() {
-        //this.fetchData();
-        return (
-            <div id="mainCnt">
-                <div id="title">ANALYSIS HISTORY</div>
-
+        return [
+            <Helmet key="helmet">
+                <link rel="stylesheet" href="css/plainBoard.min.css"/>
+            </Helmet>,
+            <div key="main" id="mainCnt">
+                <div id="title">Analysis history</div>
                 <table>
                     <thead>
                         <tr>
@@ -69,11 +62,10 @@ class PacientAnalysisHistoryPage extends React.Component {
                                 </tr>
                             )
                         })}
-
                     </tbody>
                 </table>
             </div>
-        )
+        ]
     }
 };
 

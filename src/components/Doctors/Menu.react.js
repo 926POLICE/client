@@ -10,10 +10,8 @@ export default class DoctorsMenu extends React.Component {
     render() {
         return (
             <Menu>
-                <MenuItem to='/board/doctors/bloodRequests' display='BLOOD_REQUESTS'>Blood requests</MenuItem>
-                <MenuItem to='/board/doctors/page' display='PAGE'>Page</MenuItem>
-                <MenuItem to='/board/doctors/bloodstocks' display='STOCKS'>Stocks</MenuItem>
-                <MenuItem to='/board/doctors/requests' display='REQUESTS'>Requests</MenuItem>
+                <MenuItem to='/board/doctors/bloodrequests' display='BLOOD_REQUESTS'>Blood requests</MenuItem>
+                <MenuItem to='/board/doctors/bloodstocks' display='STOCKS'>Blood stocks</MenuItem>
                 {/* <MenuItem to='/board/doctors/template' display='TEMPLATE'>Template</MenuItem> */}
             </Menu>
         )

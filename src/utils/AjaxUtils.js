@@ -33,7 +33,7 @@ AjaxUtils.request = function(type, url, data) {
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4) {
                 if (xhttp.status == 200) {
-                    isDebugging && console.log(url, 'Data:', xhttp.response);
+                    console.log(url, 'Data:', xhttp.response);
                     resolve(xhttp.response);
                 }
                 else {

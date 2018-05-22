@@ -60,7 +60,9 @@ class BloodRequestAddPage extends React.Component {
                 self.setState(self.state);
             })
             .catch(req => {
-
+                console.error(req);
+                self.state.notificationBlock = createNotification("danger", "Something very very wrong happened", 2000);
+                self.setState(self.state);
             })
     }
 
@@ -77,14 +79,16 @@ class BloodRequestAddPage extends React.Component {
         })
             .then(data => {
                 self.props.history.push({
-                    pathname: '/board/doctors/bloodRequests',
+                    pathname: '/board/doctors/bloodrequests',
 					state: {
 						display: 'BLOOD_REQUESTS'
 					}
                 })
             })
             .catch(req => {
-
+                console.error(req);
+                self.state.notificationBlock = createNotification("danger", "Something very very wrong happened", 2000);
+                self.setState(self.state);
             })
     }
 

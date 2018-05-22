@@ -48,8 +48,9 @@ class RegisterPage extends React.Component {
             username: this.state.firstName + " " + this.state.lastName,
             password: this.state.pass,
             name: this.state.firstName + " " + this.state.lastName,
-            birthday: '01/12/1998',
+            birthday: new Date(this.state.birthDate).getTime(),
             residence: this.state.residenceAddress || this.state.address,
+            address: this.state.address,
             latitude: 100,
             longitude: 100
         })
@@ -107,12 +108,8 @@ class RegisterPage extends React.Component {
                             { this.renderField({ title: 'Password again', inputData: { stateVar: 'passAgain' } }) }
                             { this.renderField({ title: 'Birth date', inputData: { stateVar: 'birthDate', type: "date" } }) }
                             { this.renderField({ title: 'Address', info: '(address from your ID card)', inputData: { stateVar: 'address' } }) }
-                            { this.renderField({ title: 'City/Town', inputData: { stateVar: 'cityName' } }) }
-                            { this.renderField({ title: 'Country', inputData: { stateVar: 'countryName' } }) }
                             <div className="miniTitle">If you leave in another address than that in your ID card:</div>
                             { this.renderField({ title: 'Residence', inputData: { stateVar: 'residenceAddress' } }) }
-                            { this.renderField({ title: 'City/Town', inputData: { stateVar: 'residenceCityName' } }) }
-                            { this.renderField({ title: 'Country', inputData: { stateVar: 'residenceCountryName' } }) }
                             <div className="row" id="registerBtns">
                                 <div className="col-12 col-md-6">
                                     <Link to='/' className="btn btn-block btn-warning">Back</Link>

@@ -1,42 +1,58 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 import LibraryLoader from 'utils/LibraryLoader';
 import AjaxUtils from 'utils/AjaxUtils.js';
+
+import serverUrls from 'data/serverUrls';
+import createNotification from 'utils/createNotification.js';
 
 class DoctorAvailableStocksPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: [{
-                "collectionDate": "12 - 12 - 2017",
-                "quantity": 10,
-                "state": 1,
-                "type": "type",
-                "shelfLife": 1,
-                "donationID": 12,
-                "clinicID": 12
-            }]
+            data: [
+                {
+                    "collectionDate": "12 - 12 - 2017",
+                    "quantity": 10,
+                    "state": 1,
+                    "type": "type",
+                    "shelfLife": 1,
+                    "donationID": 12,
+                    "clinicID": 12
+                }
+            ],
 
+            notificationBlock: null
         }
     }
 
     componentDidMount() {
         const self = this;
 
-        AjaxUtils.request('GET', 'http://localhost:8080/api/bloodstocks', undefined)
+        AjaxUtils.request('GET', serverUrls.getBloodStocks)
             .then(data => {
                     self.state.data = data;
                     self.setState(self.state);
               
             })
+            .catch(req => {
+                console.error(req);
+                self.state.notificationBlock = createNotification("danger", "Something very very wrong happened", 2000);
+                self.setState(self.state);
+            })
     }
 
     render() {
-        return (
-            <div id="mainCnt">
-                <div id="title">AVAILABLE BLOOD STOCKS</div>
+        return [
+            <Helmet key="helmet">
+                <link rel="stylesheet" href="css/stocks.min.css"/>
+            </Helmet>,
+            <div key="main" id="mainCnt">
+                { this.state.notificationBlock }
+                <div id="title">Blood stocks</div>
                 <table>
                     <thead>
                         <tr>
@@ -68,7 +84,7 @@ class DoctorAvailableStocksPage extends React.Component {
                     </tbody>
                 </table>
             </div>
-        )
+        ]
     }
 };
 
