@@ -21,10 +21,18 @@ class BoardIndexPage extends React.Component {
         }
         
         this.libraryLoader = new LibraryLoader();
+
+        this.userID = this.props.location.state && this.props.location.state.userID;
+    }
+
+    componentDidMount() {
+        if (!this.userID) {
+            window.location.href = "/";
+        }
     }
 
     render() {
-        return this.displayBlock && <this.displayBlock/>
+        return this.displayBlock && <this.displayBlock userID={this.userID}/>
     }
 };
 

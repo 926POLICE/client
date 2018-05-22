@@ -22,6 +22,8 @@ class DoctorsIndexPage extends React.Component {
         super(props);
 
         this.libraryLoader = new LibraryLoader();
+
+        console.log("USERID", this.props.userID);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -33,13 +35,18 @@ class DoctorsIndexPage extends React.Component {
     render() {
         var displayBlock = null;
 
+        const props = {
+            libraryLoader: this.libraryLoader,
+            userID: this.props.userID
+        }
+
         switch (this.props.location.state.display) {
 			case 'BLOOD_REQUEST':
-                displayBlock = <BloodRequest libraryLoader={this.libraryLoader}/>;
+                displayBlock = <BloodRequest {...props}/>;
                 break;
 
             case 'BLOOD_REQUEST_ADD':
-                displayBlock = <BloodRequestAdd libraryLoader={this.libraryLoader}/>;
+                displayBlock = <BloodRequestAdd {...props}/>;
                 break;
 
             // also add the page here (don't forget the break)
