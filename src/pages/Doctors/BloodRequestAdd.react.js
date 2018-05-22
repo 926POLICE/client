@@ -196,7 +196,7 @@ class BloodRequestAddPage extends React.Component {
                                     >
                                         <td>{patient.name}</td>
                                         <td>{patient.bloodType}</td>
-                                        <td>{patient.Rh.toString()}</td>
+                                        <td>{patient.rh.toString()}</td>
                                     </tr>
                                 )
                             })
