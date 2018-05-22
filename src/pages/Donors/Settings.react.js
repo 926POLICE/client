@@ -33,8 +33,7 @@ class PacientSettingsPage extends React.Component {
     }
 
     onSave() {
-        AjaxUtils.request('PUT', serverUrls.donors.update, {
-            DonorID: this.props.userID,
+        AjaxUtils.request('PUT', serverUrls.donors.update + `/${this.props.userID}`, {
             username: this.state.firstName + " " + this.state.lastName,
             password: this.state.pass,
             name: this.state.firstName + " " + this.state.lastName,
