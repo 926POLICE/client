@@ -10,7 +10,9 @@ export default class PacientsMenu extends React.Component {
     render() {
         return (
             <Menu>
-                <MenuItem to='/board/pacients/donate' display='DONATE'>Doneaza</MenuItem>
+                <MenuItem to='/board/pacients/donate' display='DONATE'>Donate</MenuItem>
+                <MenuItem to='/board/pacients/settings' display='SETTINGS'>Settings</MenuItem>
+                <MenuItem to='/board/pacients/history' display='HISTORY'>Analysis History</MenuItem>
                 {/* <MenuItem to='/board/pacients/template' display='TEMPLATE'>Template</MenuItem> */}
             </Menu>
         )
