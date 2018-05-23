@@ -51,7 +51,7 @@ class IndexPage extends React.Component {
             password: this.state.password
         })
             .then(data => {
-                const typeField = serverUrl.login.fields.type;
+                const typeField = serverUrls.login.fields.type;
                 if (data[typeField] == "invalid") {
 
                 } else {
@@ -63,7 +63,7 @@ class IndexPage extends React.Component {
                     self.props.history.push({
                         pathname: url,
                         state: {
-                            userID: data[serverUrl.login.fields.id],
+                            userID: data[serverUrls.login.fields.id],
                             refresh: true
                         }
                     })
