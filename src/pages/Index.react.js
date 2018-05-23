@@ -31,13 +31,13 @@ class IndexPage extends React.Component {
     }
 
     onSubmit() {
-        this.props.history.push({
-            pathname: "/board/doctors/bloodRequests/add",
-            state: {
-                userID: 10,
-                refresh: true
-            }
-        })
+//         this.props.history.push({
+//             pathname: "/board/doctors/bloodRequests/add",
+//             state: {
+//                 userID: 10,
+//                 refresh: true
+//             }
+//         })
 
         if (!this.state.username || !this.state.password) {
             this.state.notificationBlock = createNotification("danger", "Please give me an username and a password first", 3000);
@@ -46,7 +46,7 @@ class IndexPage extends React.Component {
         }
 
         const self = this;
-        AjaxUtils.request("POST", serverUrl.login.url, {
+        AjaxUtils.request("POST", serverUrls.login.url, {
             username: this.state.username,
             password: this.state.password
         })
