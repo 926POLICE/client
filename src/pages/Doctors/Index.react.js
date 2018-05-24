@@ -5,10 +5,10 @@ import LibraryLoader from 'utils/LibraryLoader'
 
 import Menu from 'components/Doctors/Menu.react.js';
 
-import BloodRequest from './BloodRequests.react';
+import BloodRequest from 'pages/Common/BloodRequests.react';
 import BloodRequestAdd from './BloodRequestAdd.react';
 
-import DoctorAvailableStocksPage from './Stocks.react';
+import StocksPage from 'pages/Common/Stocks.react';
 // here add the next pages
 
 
@@ -57,7 +57,7 @@ class DoctorsIndexPage extends React.Component {
                 break;
 
             case 'STOCKS':
-                displayBlock = <DoctorAvailableStocksPage {...props}/>;
+                displayBlock = <StocksPage {...props}/>;
                 break;
         }
         

@@ -14,11 +14,15 @@ class PacientSettingsPage extends React.Component {
         this.state = {
 
         }
+
+        if (this.props.admin) {
+            this.bloodTypes = ["A", "B", "AB", "0"];
+        }
     }
 
     componentDidMount() {
         const self = this;
-        AjaxUtils.request("GET", serverUrls.donors.getPersonalDetails, { DonorID: this.props.userID })
+        AjaxUtils.request("GET", serverUrls.donors.getPersonalDetails, { DonorID: this.props.admin ? this.props.match.params.donorID : this.props.userID })
             .then(data => {
                 self.state.name = data.name;
                 self.state.birthDate = new Date(parseInt(data.birthday)).toISOString().substring(0, 10);
@@ -97,6 +101,56 @@ class PacientSettingsPage extends React.Component {
                     { this.renderField({ title: 'Address', info: '(address from your ID card)', inputData: { stateVar: 'address' } }) }
                     <div className="miniTitle">If you leave in another address than that in your ID card:</div>
                     { this.renderField({ title: 'Residence', inputData: { stateVar: 'residenceAddress' } }) }
+                    {
+                        this.props.admin
+                        &&
+                        [
+                            <br key="br"/>,
+                            <div key="meidcalTitle" className="miniTitle">Medical settings:</div>,
+                            <div key="medicalBody">
+                                <div>
+                                    <div className="row">
+                                        <div className="col-3">Blood type:</div>    
+                                        <div className="col-9">
+                                            <select
+                                                className="form-control"
+                                                value={this.state.bloodType}
+                                                onChange={e => {
+                                                    this.state.bloodType = e.target.value;
+                                                    this.setState(this.state);
+                                                }}
+                                            >
+                                                {
+                                                    this.bloodTypes.map(type => {
+                                                        return <option key={type} value={type}>{type}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="row">
+                                        <div className="col-3">Rh:</div>    
+                                        <div className="col-9">
+                                            <select
+                                                className="form-control"
+                                                value={this.state.rh}
+                                                onChange={e => {
+                                                    this.state.rh = e.target.value;
+                                                    this.setState(this.state);
+                                                }}
+                                            >
+                                                <option value={0}>Negative</option>
+                                                <option value={1}>Positive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                { this.renderField({ title: 'Anticorps', inputData: { stateVar: 'anticorps' } }) }
+                            </div>
+                        ]
+                    }
                     <button className="btn btn-success" onClick={this.onSave}>Save</button>
                 </div>
             </div>

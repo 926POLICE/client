@@ -5,7 +5,7 @@ import LibraryLoader from 'utils/LibraryLoader'
 
 import Menu from 'components/Donors/Menu.react.js';
 import DonateBloodPage from './DonateBlood.react';
-import DonorsettingsPage from './Settings.react';
+import DonorsettingsPage from 'pages/Common/Settings.react';
 import DonorAnalysisHistoryPage from './AnalysisHistory.react';
 
 // here add the next pages

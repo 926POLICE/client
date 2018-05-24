@@ -6,7 +6,8 @@ export default {
         getAnalysisHistory: base + '/api/getAnalysisHistory',
         getPersonalDetails: base + '/api/getPersonalDetails',
         update: base + '/api/donors',
-        donate: base + '/api/donations'
+        donate: base + '/api/donations',
+        getAll: base + '/api/donors'
     },
 
     doctors: {
@@ -15,7 +16,7 @@ export default {
 
     getPatients: base + '/api/patients',
     getBloodRequests: base + '/api/checkRequestStatus',
-    getBloodStocks: base + '/api/bloodstocks',
+    getBloodStocks: base + '/api/bloodStocks',
 
     login: {
         url: base + '/api/login',

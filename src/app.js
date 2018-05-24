@@ -28,6 +28,9 @@ export default class App extends React.Component {
 
 				<Route exact path="/board/personnel" component={BoardIndexPage}/>
 				<Route exact path="/board/personnel/bloodstocks" component={BoardIndexPage}/>
+				<Route exact path="/board/personnel/bloodrequests" component={BoardIndexPage}/>
+				<Route exact path="/board/personnel/donors" component={BoardIndexPage}/>
+				<Route exact path="/board/personnel/donors/edit/:donorID" component={BoardIndexPage}/>
 
 				<Route exact path="/testapi" component={TestAPIPage}/>
 

@@ -1,1 +1,15 @@
 @import "board.less";
+
+.slide {
+    display: flex;
+    flex-direction: column;
+}
+
+.slide-inline {
+    flex-direction: row;
+    align-items: center;
+
+    >*:not(:last-child) {
+        margin-right: .7rem;
+    }
+}

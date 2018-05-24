@@ -31,29 +31,21 @@ class IndexPage extends React.Component {
     }
 
     onSubmit() {
-        this.props.history.push({
-            pathname: "/board/doctors/bloodRequests/add",
-            state: {
-                userID: 10,
-                refresh: true
-            }
-        })
-
         if (!this.state.username || !this.state.password) {
-            this.state.notificationBlock = createNotification("danger", "Please give me an username and a password first", 3000);
+            this.state.notificationBlock = createNotification("danger", "Please give me an username and a password first", 2000);
             this.setState(this.state);
             return;
         }
 
         const self = this;
-        AjaxUtils.request("POST", serverUrl.login.url, {
+        AjaxUtils.request("POST", serverUrls.login.url, {
             username: this.state.username,
             password: this.state.password
         })
             .then(data => {
-                const typeField = serverUrl.login.fields.type;
+                const typeField = serverUrls.login.fields.type;
                 if (data[typeField] == "invalid") {
-
+                    this.state.notificationBlock = createNotification("danger", "Wrong username or password", 2000);
                 } else {
                     let url = '/board/';
                     if (data[typeField] == "doctor") url += "doctors/";
@@ -63,7 +55,8 @@ class IndexPage extends React.Component {
                     self.props.history.push({
                         pathname: url,
                         state: {
-                            userID: data[serverUrl.login.fields.id],
+                            userID: data[serverUrls.login.fields.id],
+                            userName: this.state.username,
                             refresh: true
                         }
                     })
@@ -71,6 +64,7 @@ class IndexPage extends React.Component {
             })
             .catch(req => {
                 console.error(req);
+                this.state.notificationBlock = createNotification("danger", "Something went very very wrong", 2000);
             })
     }
     

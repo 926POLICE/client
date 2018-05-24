@@ -94,14 +94,14 @@ class PacientSettingsPage extends React.Component {
     render() {
         return [
             <Helmet key="helmet">
-                <link rel="stylesheet" href="css/settings.min.css"/>
+                <link rel="stylesheet" href="css/donateBlood.min.css"/>
             </Helmet>,
             <div key="main" id="mainCnt">
                 <div id="title">Donate blood</div>
                 {
                     this.state.slide == 0
                     &&
-                    <div id="slide slide-inline">
+                    <div className="slide slide-inline">
                         <div>Do you want to donate blood?</div>
                         <button 
                             className="btn btn-primary"
@@ -117,7 +117,7 @@ class PacientSettingsPage extends React.Component {
                 {
                     this.state.slide == 1
                     &&
-                    <div id="slide slide-inline">
+                    <div className="slide slide-inline">
                         <div>Do you want to donate blood for a specific person?</div>
                         <button className="btn btn-success" onClick={this.onGetPatients}>Yes</button>
                         <button className="btn btn-danger" onClick={this.onDonate}>No</button>
@@ -126,7 +126,7 @@ class PacientSettingsPage extends React.Component {
                 {
                     this.state.slide == 2
                     &&
-                    <div id="slide slide-inline">
+                    <div className="slide">
                         <div>Select the patient to which you want to donate blood</div>
                         <table>
                             <thead>
