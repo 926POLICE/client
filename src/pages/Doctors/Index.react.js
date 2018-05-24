@@ -22,12 +22,14 @@ class DoctorsIndexPage extends React.Component {
 			props.location.state = { display: 'STOCKS' };
 		} else {
             props.history.push({
-                pathname: '/board/doctors/bloodrequests',
+                pathname: '/board/doctors/bloodrequests/' + props.match.params.userID,
                 state: { display: 'BLOOD_REQUESTS' }
             })
         }
 
         super(props);
+
+        console.log(this.props.userID);
 
         this.libraryLoader = new LibraryLoader();
     }
@@ -63,7 +65,7 @@ class DoctorsIndexPage extends React.Component {
         
         return (
             <div id="rootCnt">
-                <Menu/>
+                <Menu userID={this.props.match.params.userID}/>
                 { displayBlock }
             </div>
         )

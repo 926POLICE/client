@@ -34,10 +34,6 @@ class BoardIndexPage extends React.Component {
     }
 
     componentDidMount() {
-        // if (!this.userID) {
-        //     window.location.href = "/";
-        // }
-
         if (this.props.location.state && this.props.location.state.refresh) {
             window.location.reload();
         }

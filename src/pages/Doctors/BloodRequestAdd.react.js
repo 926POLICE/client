@@ -28,7 +28,7 @@ class BloodRequestAddPage extends React.Component {
 
         this.state = {
             form: {
-                urgentyLevel: 0,
+                urgencyLevel: 0,
                 redCells: 0,
                 thrombocytes: 0,
                 bloodPlasma: 0,
@@ -36,8 +36,8 @@ class BloodRequestAddPage extends React.Component {
             },
 
             patients: [
-                { name: "Ion", bloodType: "A+", Rh: true },
-                { name: "Gheorghe", bloodType: "B+", Rh: false }
+                // { name: "Ion", bloodType: "A+", Rh: true },
+                // { name: "Gheorghe", bloodType: "B+", Rh: false }
             ],
 
             render: 0,
@@ -49,6 +49,10 @@ class BloodRequestAddPage extends React.Component {
             { level: 2, text: "Medium" },
             { level: 3, text: "High" },
         ];
+
+        this.onSubmit = this.onSubmit.bind(this);
+
+        console.log(this.props.userID);
     }
     
     componentDidMount() {
@@ -69,19 +73,21 @@ class BloodRequestAddPage extends React.Component {
     onSubmit() {
         const self = this;
 
-        AjaxUtils.request("POST", serverUrls.doctors.bloodRequest, {
+        AjaxUtils.request("POST", serverUrls.doctors.addBloodRequest, {
             PatientID: this.state.patients[this.state.form.patientID].id,
-            DoctorID: this.props.userID,
-            priority: this.props.form.urgencyLevel,
-            Rquantity: this.state.redCells,
-            Pquantity: this.state.bloodPlasma,
-            Tquantity: this.state.thrombocytes
+            DoctorID: parseInt(this.props.match.params.userID),
+            Priority: this.state.form.urgencyLevel,
+            RQuantity: this.state.form.redCells,
+            PQuantity: this.state.form.bloodPlasma,
+            TQuantity: this.state.form.thrombocytes
         })
             .then(data => {
+                console.log("RESPONSE", data);
                 self.props.history.push({
-                    pathname: '/board/doctors/bloodrequests',
+                    pathname: '/board/doctors/bloodrequests/' + this.props.match.params.userID,
 					state: {
-						display: 'BLOOD_REQUESTS'
+                        display: 'BLOOD_REQUESTS',
+                        response: 2
 					}
                 })
             })
@@ -129,10 +135,10 @@ class BloodRequestAddPage extends React.Component {
                                 <input 
                                     key={`urgencyLevels${level.level}`}
                                     type="button" 
-                                    className={`btn btn-selectable ${this.state.form.urgentyLevel == level.level ? "btn-selected" : "btn-notselected"}`} 
+                                    className={`btn btn-selectable ${this.state.form.urgencyLevel == level.level ? "btn-selected" : "btn-notselected"}`} 
                                     value={level.text}
                                     onClick={() => {
-                                        this.state.form.urgentyLevel = level.level;
+                                        this.state.form.urgencyLevel = level.level;
                                         this.setState(this.state);
                                     }}
                                 />
@@ -196,7 +202,7 @@ class BloodRequestAddPage extends React.Component {
                                     >
                                         <td>{patient.name}</td>
                                         <td>{patient.bloodType}</td>
-                                        {/* <td>{patient.rh.toString()}</td> */}
+                                        <td>{patient.rh ? "Positive" : "False"}</td>
                                     </tr>
                                 )
                             })

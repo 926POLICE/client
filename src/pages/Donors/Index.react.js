@@ -20,7 +20,7 @@ class DonorsIndexPage extends React.Component {
             props.location.state = { display: 'HISTORY' }; 
         } else {
             props.history.push({
-                pathname: '/board/donors/donate',
+                pathname: '/board/donors/donate/' + props.match.params.userID,
                 state: { display: 'DONATE' }
             })
         }
@@ -59,7 +59,7 @@ class DonorsIndexPage extends React.Component {
         
         return (
             <div id="rootCnt">
-                <Menu/>
+                <Menu userID={this.props.match.params.userID}/>
                 { displayBlock }
             </div>
         )

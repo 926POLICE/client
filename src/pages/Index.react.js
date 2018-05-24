@@ -44,8 +44,9 @@ class IndexPage extends React.Component {
         })
             .then(data => {
                 const typeField = serverUrls.login.fields.type;
-                if (data[typeField] == "invalid") {
-                    this.state.notificationBlock = createNotification("danger", "Wrong username or password", 2000);
+                if (data.id == -1) {
+                    console.error("INVALID");
+                    self.state.notificationBlock = createNotification("danger", "Wrong username or password", 2000);
                 } else {
                     let url = '/board/';
                     console.log(data[typeField]);
@@ -53,13 +54,15 @@ class IndexPage extends React.Component {
                     else if (data[typeField] == "donor") url += "donors/";
                     else if (data[typeField] == "personnel") url += "personnel/";
 
+                    url += data[serverUrls.login.fields.id];
+
                     console.log("GOOD", url);
 
                     self.props.history.push({
                         pathname: url,
                         state: {
                             userID: data[serverUrls.login.fields.id],
-                            userName: this.state.username,
+                            userName: self.state.username,
                             refresh: true
                         }
                     })

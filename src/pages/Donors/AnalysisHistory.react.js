@@ -15,18 +15,18 @@ class PacientAnalysisHistoryPage extends React.Component {
         //an array of donations
         this.state = {
             data: [
-                {
-                    "patientID": 1,
-                    "analysisResult": true,
-                    "clinicID": 12
-                }
+                // {
+                //     "patientID": 1,
+                //     "analysisResult": true,
+                //     "clinicID": 12
+                // }
             ]
         }
     }
 
     componentDidMount() {
         const self = this;
-        AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory, { donorID: this.props.userID })
+        AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory + '/' + this.props.match.params.userID)
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);

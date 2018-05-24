@@ -18,11 +18,13 @@ class PacientSettingsPage extends React.Component {
         if (this.props.admin) {
             this.bloodTypes = ["A", "B", "AB", "0"];
         }
+
+        this.onSave = this.onSave.bind(this);
     }
 
     componentDidMount() {
         const self = this;
-        AjaxUtils.request("GET", serverUrls.donors.getPersonalDetails, { DonorID: this.props.admin ? this.props.match.params.donorID : this.props.userID })
+        AjaxUtils.request("GET", serverUrls.donors.getPersonalDetails + '/' + (this.props.admin ? this.props.match.params.donorID : this.props.match.params.userID))
             .then(data => {
                 self.state.name = data.name;
                 self.state.birthDate = new Date(parseInt(data.birthday)).toISOString().substring(0, 10);
@@ -37,10 +39,11 @@ class PacientSettingsPage extends React.Component {
     }
 
     onSave() {
-        AjaxUtils.request('PUT', serverUrls.donors.update + `/${this.props.userID}`, {
-            username: this.state.firstName + " " + this.state.lastName,
+        const self = this;
+        AjaxUtils.request('PUT', serverUrls.donors.update + `/${this.props.match.params.userID}`, {
+            username: this.state.name,
             password: this.state.pass,
-            name: this.state.firstName + " " + this.state.lastName,
+            name: this.state.name,
             birthday: new Date(this.state.birthDate).getTime(),
             residence: this.state.residenceAddress || this.state.address,
             address: this.state.address,
@@ -48,7 +51,7 @@ class PacientSettingsPage extends React.Component {
             longitude: 100
         })
             .then(() => {
-                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+                self.props.createNotification("success", "Updated successfully", 2000);
             })
             .catch(error => {
                 console.error(req);

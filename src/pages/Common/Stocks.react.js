@@ -14,15 +14,15 @@ class DoctorAvailableStocksPage extends React.Component {
 
         this.state = {
             data: [
-                {
-                    "collectionDate": 1527055944863,
-                    "quantity": 10,
-                    "state": 1,
-                    "type": "type",
-                    "shelfLife": 1,
-                    "donationID": 12,
-                    "clinicID": 12
-                }
+                // {
+                //     "collectionDate": 1527055944863,
+                //     "quantity": 10,
+                //     "state": 1,
+                //     "type": "type",
+                //     "shelfLife": 1,
+                //     "donationID": 12,
+                //     "clinicID": 12
+                // }
             ],
 
             notificationBlock: null
@@ -62,7 +62,6 @@ class DoctorAvailableStocksPage extends React.Component {
                             <th>Type</th>
                             <th>Shelf Life</th>
                             <th>DonationID</th>
-                            <th>ClinicID</th>
                         </tr>
                     </thead>
 
@@ -78,7 +77,6 @@ class DoctorAvailableStocksPage extends React.Component {
                                     <td>{row.type}</td>
                                     <td>{row.shelfLife}</td>
                                     <td>{row.donationID}</td>
-                                    <td>{row.clinicID}</td>
                                 </tr>
                             )
                         })}

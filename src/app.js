@@ -16,15 +16,15 @@ export default class App extends React.Component {
 
 				<Route exact path="/register" component={RegisterPage}/>
 
-				<Route exact path="/board/doctors" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/bloodrequests" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/bloodrequests/add" component={BoardIndexPage}/>
-				<Route exact path="/board/doctors/bloodstocks" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/bloodrequests/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/bloodrequests/add/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/doctors/bloodstocks/:userID" component={BoardIndexPage}/>
 
-				<Route exact path="/board/donors" component={BoardIndexPage}/>
-				<Route exact path="/board/donors/donate" component={BoardIndexPage}/>
-				<Route exact path="/board/donors/settings" component={BoardIndexPage}/>
-				<Route exact path="/board/donors/history" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/donate/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/settings/:userID" component={BoardIndexPage}/>
+				<Route exact path="/board/donors/history/:userID" component={BoardIndexPage}/>
 
 				<Route exact path="/board/personnel" component={BoardIndexPage}/>
 				<Route exact path="/board/personnel/bloodstocks" component={BoardIndexPage}/>

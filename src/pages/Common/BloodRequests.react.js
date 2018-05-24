@@ -18,22 +18,22 @@ class BloodRequestsPage extends React.Component {
 
         this.state = {
             data: [
-                {
-                    "patientID": 1,
-                    "redBloodCellsQuantity": 20,
-                    "plasmaQuantity": 10,
-                    "thrombocytesQuantity": 30,
-                    "priority": 3,
-                    "completed": true
-                },
-                {
-                    "patientID": 2,
-                    "redBloodCellsQuantity": 30,
-                    "plasmaQuantity": 50,
-                    "thrombocytesQuantity": 10,
-                    "priority": 2,
-                    "completed": false
-                }
+                // {
+                //     "patientID": 1,
+                //     "redBloodCellsQuantity": 20,
+                //     "plasmaQuantity": 10,
+                //     "thrombocytesQuantity": 30,
+                //     "priority": 3,
+                //     "completed": true
+                // },
+                // {
+                //     "patientID": 2,
+                //     "redBloodCellsQuantity": 30,
+                //     "plasmaQuantity": 50,
+                //     "thrombocytesQuantity": 10,
+                //     "priority": 2,
+                //     "completed": false
+                // }
             ],
 
             editIndex: -1
@@ -49,16 +49,22 @@ class BloodRequestsPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        // AjaxUtils.request('GET', serverUrls.doctors.getBloodRequests, { DoctorID: this.props.userID })
-        //     .then(data => {
-        //         self.state.data = data;
-        //         self.setState(self.state);
-        //     })
-        //     .catch(req => {
-        //         console.error(req);
-        //         this.props.createNotification("danger", "Something very very wrong happened", 2000);
-        //         self.setState(self.state);
-        //     })
+        AjaxUtils.request('GET', serverUrls.getBloodRequests, { DoctorID: this.props.admin ? undefined : this.props.userID })
+            .then(data => {
+                self.state.data = data;
+                self.setState(self.state);
+            })
+            .catch(req => {
+                console.error(req);
+                this.props.createNotification("danger", "Something very very wrong happened", 2000);
+                self.setState(self.state);
+            })
+
+        if (this.props.location.state && this.props.location.state.response) {
+            if (this.props.location.state.response == 2) {
+                this.props.createNotification("success", "Request sent successfully", 200);
+            }
+        }
     }
 
     render() {
@@ -76,7 +82,7 @@ class BloodRequestsPage extends React.Component {
                             <Link 
                                 className="btn btn-success"
                                 to={{
-                                    pathname: "/board/doctors/bloodrequests/add",
+                                    pathname: "/board/doctors/bloodrequests/add/" + this.props.match.params.userID,
                                     state: {
                                         display: "BLOOD_REQUESTS_ADD"
                                     }
@@ -95,7 +101,6 @@ class BloodRequestsPage extends React.Component {
                             <th>Plasma Quantity</th>
                             <th>Thrombocytes Quantity</th>
                             <th>Priority</th>
-                            <th>Completed</th>
                             { this.props.admin && <th></th> }
                         </tr>
                     </thead>
@@ -169,7 +174,6 @@ class BloodRequestsPage extends React.Component {
                                             <td key="prority">{this.urgencyLevels[row.priority]}</td>
                                         ]
                                     }
-                                    <td>{row.completed.toString()}</td>
                                     {
                                         this.props.admin
                                         &&

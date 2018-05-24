@@ -75,7 +75,7 @@ class DonorsPage extends React.Component {
                                     <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
                                     <td>{row.residence || row.address}</td>
                                     <td>{row.bloodType}</td>
-                                    <td>{row.rh}</td>
+                                    <td>{row.rh.toString()}</td>
                                     <td>{row.anticorps}</td>
                                     <td>
                                         <Link 
