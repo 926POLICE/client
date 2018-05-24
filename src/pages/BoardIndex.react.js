@@ -7,6 +7,8 @@ import DoctorsIndex from 'pages/Doctors/Index.react';
 import DonorsIndex from 'pages/Donors/Index.react';
 import PersonnelIndex from 'pages/Personnel/Index.react';
 
+import TopBar from 'components/TopBar.react';
+
 import createNotification from 'utils/createNotification.js';
 
 class BoardIndexPage extends React.Component {
@@ -45,7 +47,9 @@ class BoardIndexPage extends React.Component {
         return this.displayBlock && 
         [
             this.state.notificationBlock,
-            <this.displayBlock 
+            <TopBar key="topBar" userName={this.userName}/>,
+            <this.displayBlock
+                key="displayBlock"
                 userID={this.userID}
                 createNotification={(level, message, time) => {
                     this.state.notificationBlock = createNotification(level, message, time);

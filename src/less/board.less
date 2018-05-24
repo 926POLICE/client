@@ -62,11 +62,11 @@ table {
                 text-align: center;
 
                 &:first-child {
-                    border-radius: .5rem 0 0 0;
+                    border-top-left-radius: .5rem;
                 }
 
                 &:last-child {
-                    border-radius: 0 .5rem 0 0;
+                    border-top-right-radius: .5rem;
                 }
             }
         }
@@ -139,5 +139,26 @@ table {
 
     .is-bad {
         background-color: #ff9797;
+    }
+}
+
+svg {
+    width: 1rem;
+}
+
+#topBarCnt {
+    padding: .3rem .5rem;
+    color: #000;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 0px 11px #d4d4d4;
+    border-bottom: 1px solid #d4d4d4;
+    align-items: center;
+
+    svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
     }
 }

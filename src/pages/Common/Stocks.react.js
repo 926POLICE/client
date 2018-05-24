@@ -15,7 +15,7 @@ class DoctorAvailableStocksPage extends React.Component {
         this.state = {
             data: [
                 {
-                    "collectionDate": "12 - 12 - 2017",
+                    "collectionDate": 1527055944863,
                     "quantity": 10,
                     "state": 1,
                     "type": "type",
@@ -68,9 +68,11 @@ class DoctorAvailableStocksPage extends React.Component {
 
                       <tbody>
                         {this.state.data.map((row, index) => {
+                            const date = new Date(row.collectionDate);
+
                             return (
                                 <tr key={`r${index}`}>
-                                    <td>{row.collectionDate}</td>
+                                    <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
                                     <td>{row.quantity}</td>
                                     <td>{row.state}</td>
                                     <td>{row.type}</td>
