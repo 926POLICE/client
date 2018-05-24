@@ -48,9 +48,12 @@ class IndexPage extends React.Component {
                     this.state.notificationBlock = createNotification("danger", "Wrong username or password", 2000);
                 } else {
                     let url = '/board/';
+                    console.log(data[typeField]);
                     if (data[typeField] == "doctor") url += "doctors/";
                     else if (data[typeField] == "donor") url += "donors/";
                     else if (data[typeField] == "personnel") url += "personnel/";
+
+                    console.log("GOOD", url);
 
                     self.props.history.push({
                         pathname: url,

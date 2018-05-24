@@ -1,4 +1,4 @@
-const base = 'http://localhost:8080';
+const base = 'http://f99f5da6.ngrok.io';
 
 export default {
     donors: {
@@ -15,14 +15,14 @@ export default {
     },
 
     getPatients: base + '/api/patients',
-    getBloodRequests: base + '/api/checkRequestStatus',
+    getBloodRequests: base + '/api/requests/status',
     getBloodStocks: base + '/api/bloodStocks',
 
     login: {
         url: base + '/api/login',
         fields: {
-            type: "Type",
-            id: "ID"
+            type: "type",
+            id: "id"
         }
     }
 };
