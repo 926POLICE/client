@@ -19,7 +19,7 @@ class PersonnelIndexPage extends React.Component {
 			props.location.state = { display: 'DONORS' };
 		} else {
             props.history.push({
-                pathname: '/board/personnel/bloodrequests',
+                pathname: '/board/personnel/bloodrequests/' + props.match.params.userID,
                 state: { display: 'BLOOD_REQUESTS' }
             })
         }
@@ -63,7 +63,7 @@ class PersonnelIndexPage extends React.Component {
         
         return (
             <div id="rootCnt">
-                <Menu/>
+                <Menu userID={this.props.match.params.userID}/>
                 { displayBlock }
             </div>
         )

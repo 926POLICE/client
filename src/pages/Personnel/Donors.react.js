@@ -16,15 +16,15 @@ class DonorsPage extends React.Component {
 
         this.state = {
             data: [
-                {
-                    id: 10,
-                    name: "name",
-                    collectionDate: Date.now(),
-                    residence: "HERE",
-                    bloodType: "R1",
-                    rh: true,
-                    anticorps: "123"
-                }
+                // {
+                //     id: 10,
+                //     name: "name",
+                //     collectionDate: Date.now(),
+                //     residence: "HERE",
+                //     bloodType: "R1",
+                //     rh: true,
+                //     anticorps: "123"
+                // }
             ]
         }
     }
@@ -82,7 +82,7 @@ class DonorsPage extends React.Component {
                                             key="editBtn" 
                                             className="btn btn-warning"
                                             to={{
-                                                pathname: `/board/personnel/donors/edit/${row.id}`,
+                                                pathname: `/board/personnel/donors/edit/${row.id}/` + this.props.match.params.userID,
                                                 state: { display: 'DONORS_EDIT' }
                                             }}
                                         >
