@@ -17,24 +17,7 @@ class BloodRequestsPage extends React.Component {
         super(props);
 
         this.state = {
-            data: [
-                // {
-                //     "patientID": 1,
-                //     "redBloodCellsQuantity": 20,
-                //     "plasmaQuantity": 10,
-                //     "thrombocytesQuantity": 30,
-                //     "priority": 3,
-                //     "completed": true
-                // },
-                // {
-                //     "patientID": 2,
-                //     "redBloodCellsQuantity": 30,
-                //     "plasmaQuantity": 50,
-                //     "thrombocytesQuantity": 10,
-                //     "priority": 2,
-                //     "completed": false
-                // }
-            ],
+            data: [],
 
             editIndex: -1
         }
@@ -44,19 +27,21 @@ class BloodRequestsPage extends React.Component {
             2: "Medium",
             3: "High",
         };
+
+        this.completeRequest = this.completeRequest.bind(this);
     }
 
     componentDidMount() {
         const self = this;
 
-        AjaxUtils.request('GET', serverUrls.getBloodRequests, { DoctorID: this.props.admin ? undefined : this.props.userID })
+        AjaxUtils.request('GET', this.props.admin ? serverUrls.getBloodRequests : serverUrls.doctors.getBloodRequests(this.props.match.params.userID))
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);
             })
             .catch(req => {
                 console.error(req);
-                this.props.createNotification("danger", "Something very very wrong happened", 2000);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
                 self.setState(self.state);
             })
 
@@ -65,6 +50,26 @@ class BloodRequestsPage extends React.Component {
                 this.props.createNotification("success", "Request sent successfully", 200);
             }
         }
+    }
+
+    completeRequest(id, index) {
+        const self = this;
+
+        AjaxUtils.request("PUT", serverUrls.personnel.completeRequest(id))
+            .then(data => {
+                if (data == 0) {
+                    self.state.data.splice(index, 1);
+                    self.setState(self.state);
+
+                    self.props.createNotification("success", "Request completed successfully", 2000);
+                } else {
+                    self.props.createNotification("danger", "We don't have enough stocks for this request", 2000);
+                }
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
     }
 
     render() {
@@ -106,117 +111,34 @@ class BloodRequestsPage extends React.Component {
                     </thead>
 
                     <tbody>
-                        {this.state.data.map((row, index) => {
-                            return (
-                                <tr key={`r${index}`}>
-                                    <td>{row.patientID}</td>
-                                    {
-                                        (this.state.editIndex == index)
-                                        ?
-                                        [
-                                            <td key="red1">
-                                                <input 
-                                                    type="number"
-                                                    className="form-control"
-                                                    value={this.state.row.redBloodCellsQuantity}
-                                                    onChange={e => {
-                                                        this.state.row.redBloodCellsQuantity = parseInt(e.target.value) || 0;
-                                                        this.setState(this.state);
-                                                    }}
-                                                />
-                                            </td>,
-                                            <td key="plasma2">
-                                                <input 
-                                                    type="number"
-                                                    className="form-control"
-                                                    value={this.state.row.plasmaQuantity}
-                                                    onChange={e => {
-                                                        this.state.row.plasmaQuantity = parseInt(e.target.value) || 0;
-                                                        this.setState(this.state);
-                                                    }}
-                                                />
-                                            </td>,
-                                            <td key="white3">
-                                                <input 
-                                                    type="number"
-                                                    className="form-control"
-                                                    value={this.state.row.thrombocytesQuantity}
-                                                    onChange={e => {
-                                                        this.state.row.thrombocytesQuantity = parseInt(e.target.value) || 0;
-                                                        this.setState(this.state);
-                                                    }}
-                                                />
-                                            </td>,
-                                            <td key="prority4">
-                                                <select 
-                                                    className="form-control" 
-                                                    value={this.state.row.priority}
-                                                    onChange={e => {
-                                                        this.state.row.priority = parseInt(e.target.value);
-                                                        this.setState(this.state);
-                                                    }}
-                                                >
-                                                    {
-                                                        Object.keys(this.urgencyLevels).map(level => {
-                                                            return (
-                                                                <option key={`urgency${level}`} value={level}>{this.urgencyLevels[level]}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
+                        {
+                            (this.state.data.length > 0)
+                            ?
+                            this.state.data.map((row, index) => {
+                                return (
+                                    <tr key={`r${index}`}>
+                                        <td>{row.patientid}</td>
+                                        <td key="red">{row.rquantity}ml</td>
+                                        <td key="plasma">{row.pquantity}ml</td>
+                                        <td key="white">{row.tquantity}ml</td>
+                                        <td key="prority">{this.urgencyLevels[row.priority]}</td>
+                                        {
+                                            this.props.admin
+                                            &&
+                                            <td>
+                                                <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)}>
+                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                </button>
                                             </td>
-                                        ]
-                                        :
-                                        [
-                                            <td key="red">{row.redBloodCellsQuantity}ml</td>,
-                                            <td key="plasma">{row.plasmaQuantity}ml</td>,
-                                            <td key="white">{row.thrombocytesQuantity}ml</td>,
-                                            <td key="prority">{this.urgencyLevels[row.priority]}</td>
-                                        ]
-                                    }
-                                    {
-                                        this.props.admin
-                                        &&
-                                        <td>
-                                            {
-                                                (this.state.editIndex == index)
-                                                ?
-                                                [
-                                                    <button key="successBtn" className="btn btn-success">
-                                                        <FontAwesomeIcon icon={faCheck}/>
-                                                    </button>,
-                                                    <button 
-                                                        key="dangerBtn" 
-                                                        className="btn btn-danger" 
-                                                        onClick={() => {
-                                                            this.state.editIndex = -1;
-                                                            console.log("SSSS");
-                                                            this.setState(this.state);
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faTimes}/>
-                                                    </button>
-                                                ]
-                                                :
-                                                [
-                                                    <button 
-                                                        key="editBtn" 
-                                                        className="btn btn-warning" 
-                                                        onClick={() => {
-                                                            this.state.editIndex = index;
-                                                            this.state.row = Object.assign({}, row);
-                                                            this.setState(this.state);
-                                                        }}   
-                                                    >
-                                                        <FontAwesomeIcon icon={faPencil}/>
-                                                    </button>
-                                                ]
-                                            }
-                                        </td>
-                                    }
-                                </tr>
-                            )
-                        })}
+                                        }
+                                    </tr>
+                                )
+                            })
+                            :
+                            <tr>
+                                <td colSpan={ this.props.admin ? 6 : 5 } style={{textAlign: "center"}}>No requests</td>
+                            </tr>
+                        }
 
                     </tbody>
 

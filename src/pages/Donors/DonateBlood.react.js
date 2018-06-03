@@ -15,7 +15,9 @@ class PacientSettingsPage extends React.Component {
             slide: 0,
 
             patients: [],
-            patientID: null
+            patientID: null,
+
+            donationStatus: null
         }
 
         this.onGetPatients = this.onGetPatients.bind(this);
@@ -24,23 +26,41 @@ class PacientSettingsPage extends React.Component {
 
     componentDidMount() {
         const self = this;
+
+        AjaxUtils.request("GET", serverUrls.donors.getNextDonation(this.props.match.params.userID))
+            .then(data => {
+                if (data <= Date.now()) {
+                    self.state.slide = 4;
+                    self.state.nextDonationDate = new Date(data);
+                    self.setState(self.state);
+                }
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
     }
 
     onDonate() {
         // TODO: What get if the donor can't donate?
-        AjaxUtils.request('POST', serverUrls.donors.donate, {
-            DonorID: this.props.userID,
-            PatientID: this.state.patientID
+        const self = this;
+        AjaxUtils.request('POST', serverUrls.donors.donate(), {
+            donorid: this.props.match.params.userID,
+            patientid: this.state.patientID
         })
-            .then(() => {
-                self.props.createNotification("danger", "We have registered you!", 2000);
+            .then(data => {
+                console.log(data);
+
+                self.state.donationStatus = true // <= TODO
+
+                self.props.createNotification("success", "We have registered you for a blood donation!", 2000);
             })
-            .catch(error => {
+            .catch(req => {
                 console.error(req);
                 self.props.createNotification("danger", "Something very very wrong happened", 2000);
             })
 
-        this.state.slide = 0;
+        this.state.slide = 3;
         this.setState(this.state);
     }
 
@@ -153,6 +173,30 @@ class PacientSettingsPage extends React.Component {
                             </tbody>
                         </table>
                     </div>
+                }
+                {
+                    this.state.slide == 3
+                    &&
+                    <div className={`donateStatusSlide ${this.state.donationStatus == null ? "" : (this.state.donationStatus ? "goodCnt" : "badCnt")}`}>
+                        {
+                            this.state.donationStatus == null
+                            ?
+                            "We are now processing your request... Please wait..."
+                            :
+                            (
+                                this.state.donationStatus
+                                ?
+                                "You've been registered for a donation. Come to the clinic to honor it!"
+                                :
+                                "You can't donate right now"
+                            )
+                        }
+                    </div>  
+                }
+                {
+                    this.state.slide == 4
+                    &&
+                    <div>We are sorry, but you can't donate right now. Please come back on {this.state.nextDonationDate.getDate()}/{this.state.nextDonationDate.getMonth()+1}/{this.state.nextDonationDate.getFullYear()}</div>
                 }
             </div>
         ];

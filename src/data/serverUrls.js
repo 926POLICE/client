@@ -1,18 +1,23 @@
-const base = 'http://f99f5da6.ngrok.io';
+const base = 'http://cc399ccf.ngrok.io';
 
 export default {
     donors: {
         register: base + '/api/donors',
-        getAnalysisHistory: base + '/api/donors/history',
+        getAnalysisHistory: (clientID) => base + '/api/donors/history/' + clientID,
         getPersonalDetails: base + '/api/donors',
-        update: base + '/api/donors',
-        donate: base + '/api/donations',
-        getAll: base + '/api/donors'
+        update: (clientID) => base + '/api/donors/' + clientID,
+        donate: () => base + '/api/donations/',
+        getAll: base + '/api/donors',
+        getNextDonation: (clientID) => base + '/api/donors/nextDonation/' + clientID
     },
 
     doctors: {
-        getBloodRequests: base + '/api/requests/doctors',
+        getBloodRequests: (clientID) => base + '/api/requests/doctors/' + clientID,
         addBloodRequest: base + '/api/requests'
+    },
+
+    personnel: {
+        completeRequest: (requestID) => base + '/api/requests/' + requestID
     },
 
     getPatients: base + '/api/patients',

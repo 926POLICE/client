@@ -45,8 +45,8 @@ class IndexPage extends React.Component {
             .then(data => {
                 const typeField = serverUrls.login.fields.type;
                 if (data.id == -1) {
-                    console.error("INVALID");
                     self.state.notificationBlock = createNotification("danger", "Wrong username or password", 2000);
+                    self.setState(self.state);
                 } else {
                     let url = '/board/';
                     console.log(data[typeField]);
@@ -71,6 +71,7 @@ class IndexPage extends React.Component {
             .catch(req => {
                 console.error(req);
                 this.state.notificationBlock = createNotification("danger", "Something went very very wrong", 2000);
+                self.setState(self.state);
             })
     }
     

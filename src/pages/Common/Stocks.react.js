@@ -13,19 +13,7 @@ class DoctorAvailableStocksPage extends React.Component {
         super(props);
 
         this.state = {
-            data: [
-                // {
-                //     "collectionDate": 1527055944863,
-                //     "quantity": 10,
-                //     "state": 1,
-                //     "type": "type",
-                //     "shelfLife": 1,
-                //     "donationID": 12,
-                //     "clinicID": 12
-                // }
-            ],
-
-            notificationBlock: null
+            data: []
         }
     }
 
@@ -34,14 +22,13 @@ class DoctorAvailableStocksPage extends React.Component {
 
         AjaxUtils.request('GET', serverUrls.getBloodStocks)
             .then(data => {
-                    self.state.data = data;
-                    self.setState(self.state);
+                self.state.data = data;
+                self.setState(self.state);
               
             })
             .catch(req => {
                 console.error(req);
-                self.state.notificationBlock = createNotification("danger", "Something very very wrong happened", 2000);
-                self.setState(self.state);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
             })
     }
 
@@ -51,35 +38,54 @@ class DoctorAvailableStocksPage extends React.Component {
                 <link rel="stylesheet" href="css/stocks.min.css"/>
             </Helmet>,
             <div key="main" id="mainCnt">
-                { this.state.notificationBlock }
                 <div id="title">Blood stocks</div>
                 <table>
                     <thead>
                         <tr>
-                            <th>Date of Collection</th>
+                            <th>Date of collection</th>
                             <th>Quantity</th>
                             <th>State</th>
                             <th>Type</th>
                             <th>Shelf Life</th>
-                            <th>DonationID</th>
+                            { this.props.admin && <th>DonationID</th> }
                         </tr>
                     </thead>
 
                       <tbody>
-                        {this.state.data.map((row, index) => {
-                            const date = new Date(row.collectionDate);
+                        {
+                            (this.state.data.length > 0)
+                            ?
+                            this.state.data.map((row, index) => {
+                                const date = new Date(row.collectiondate);
 
-                            return (
-                                <tr key={`r${index}`}>
-                                    <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                    <td>{row.quantity}</td>
-                                    <td>{row.state}</td>
-                                    <td>{row.type}</td>
-                                    <td>{row.shelfLife}</td>
-                                    <td>{row.donationID}</td>
-                                </tr>
-                            )
-                        })}
+                                return (
+                                    <tr key={`r${index}`}>
+                                        <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
+                                        <td>{row.quantity}</td>
+                                        <td>{row.state}</td>
+                                        <td>{
+                                            row.type == "r"
+                                            ?
+                                            "red cells"
+                                            :
+                                            (
+                                                row.type == "p"
+                                                ?
+                                                "plasma"
+                                                :
+                                                "thrombocytes"
+                                            )
+                                        }</td>
+                                        <td>{row.shelflife} days</td>
+                                        { this.props.admin && <td>{row.donationid}</td> }
+                                    </tr>
+                                )
+                            })
+                            :
+                            <tr>
+                                <td colSpan={6} style={{textAlign: "center"}}>No stocks</td>
+                            </tr>
+                        }
 
                     </tbody>
                 </table>

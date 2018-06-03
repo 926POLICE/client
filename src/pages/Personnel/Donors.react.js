@@ -66,32 +66,40 @@ class DonorsPage extends React.Component {
                     </thead>
 
                     <tbody>
-                        {this.state.data.map((row, index) => {
-                            const date = new Date(row.collectionDate);
+                        {
+                            (this.state.data.length > 0) 
+                            ?
+                            this.state.data.map((row, index) => {
+                                const date = new Date(row.birthday);
 
-                            return (
-                                <tr key={`r${index}`}>
-                                    <td>{row.name}</td>
-                                    <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                    <td>{row.residence || row.address}</td>
-                                    <td>{row.bloodType}</td>
-                                    <td>{row.rh.toString()}</td>
-                                    <td>{row.anticorps}</td>
-                                    <td>
-                                        <Link 
-                                            key="editBtn" 
-                                            className="btn btn-warning"
-                                            to={{
-                                                pathname: `/board/personnel/donors/edit/${row.id}/` + this.props.match.params.userID,
-                                                state: { display: 'DONORS_EDIT' }
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faPencil}/>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                                return (
+                                    <tr key={`r${index}`}>
+                                        <td>{row.name}</td>
+                                        <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
+                                        <td>{row.residence || row.address}</td>
+                                        <td>{row.bloodtype}</td>
+                                        <td>{row.rh ? "Positive" : "Negative"}</td>
+                                        <td>{row.anticorps}</td>
+                                        <td>
+                                            <Link 
+                                                key="editBtn" 
+                                                className="btn btn-warning"
+                                                to={{
+                                                    pathname: `/board/personnel/donors/edit/${row.id}/` + this.props.match.params.userID,
+                                                    state: { display: 'DONORS_EDIT' }
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faPencil}/>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                            :
+                            <tr>
+                                <td colSpan={7} style={{textAlign:"center"}}>No donors</td>
+                            </tr>
+                        }
 
                     </tbody>
 

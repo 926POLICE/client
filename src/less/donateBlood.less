@@ -3,6 +3,14 @@
 .slide {
     display: flex;
     flex-direction: column;
+
+    tbody > tr {
+        cursor: pointer;
+
+        &:hover {
+            background-color: #889bff;
+        }
+    }
 }
 
 .slide-inline {
@@ -12,4 +20,21 @@
     >*:not(:last-child) {
         margin-right: .7rem;
     }
+}
+
+.donateStatusSlide {
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    background-color: #ececec;
+    border-radius: .5rem;
+    text-align: center;
+}
+
+.goodCnt {
+    background-color: #00b900;
+    color: #fff;
+}
+
+.badCnt {
+    background-color: #d41b1b;
+    color: #fff;
 }

@@ -26,9 +26,15 @@ class BloodRequestAddPage extends React.Component {
     constructor(props) {
         super(props);
 
+        this.urgencyLevels = [
+            { level: 1, text: "Low" },
+            { level: 2, text: "Medium" },
+            { level: 3, text: "High" },
+        ];
+
         this.state = {
             form: {
-                urgencyLevel: 0,
+                urgencyLevel: this.urgencyLevels[0].level,
                 redCells: 0,
                 thrombocytes: 0,
                 bloodPlasma: 0,
@@ -43,12 +49,6 @@ class BloodRequestAddPage extends React.Component {
             render: 0,
             notificationBlock: null
         }
-
-        this.urgencyLevels = [
-            { level: 1, text: "Low" },
-            { level: 2, text: "Medium" },
-            { level: 3, text: "High" },
-        ];
 
         this.onSubmit = this.onSubmit.bind(this);
 
@@ -74,12 +74,12 @@ class BloodRequestAddPage extends React.Component {
         const self = this;
 
         AjaxUtils.request("POST", serverUrls.doctors.addBloodRequest, {
-            PatientID: this.state.patients[this.state.form.patientID].id,
-            DoctorID: parseInt(this.props.match.params.userID),
-            Priority: this.state.form.urgencyLevel,
-            RQuantity: this.state.form.redCells,
-            PQuantity: this.state.form.bloodPlasma,
-            TQuantity: this.state.form.thrombocytes
+            patientid: this.state.patients[this.state.form.patientID].id,
+            doctorid: parseInt(this.props.match.params.userID),
+            priority: this.state.form.urgencyLevel,
+            rquantity: this.state.form.redCells,
+            pquantity: this.state.form.bloodPlasma,
+            tquantity: this.state.form.thrombocytes
         })
             .then(data => {
                 console.log("RESPONSE", data);
@@ -201,7 +201,7 @@ class BloodRequestAddPage extends React.Component {
                                         className={this.state.form.patientID == index ? "selected" : undefined}
                                     >
                                         <td>{patient.name}</td>
-                                        <td>{patient.bloodType}</td>
+                                        <td>{patient.bloodtype}</td>
                                         <td>{patient.rh ? "Positive" : "False"}</td>
                                     </tr>
                                 )

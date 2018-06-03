@@ -20,6 +20,7 @@ class PacientSettingsPage extends React.Component {
         }
 
         this.onSave = this.onSave.bind(this);
+        this.checkField = this.checkField.bind(this);
     }
 
     componentDidMount() {
@@ -30,6 +31,7 @@ class PacientSettingsPage extends React.Component {
                 self.state.birthDate = new Date(parseInt(data.birthday)).toISOString().substring(0, 10);
                 self.state.residenceAddress = data.residence;
                 self.state.address = data.address;
+                self.state.id = data.id;
                 self.setState(self.state);
             })
             .catch(req => {
@@ -38,9 +40,36 @@ class PacientSettingsPage extends React.Component {
             })
     }
 
+    checkField(stateVar) {
+        if (!this.state[stateVar]) {
+            this.state[stateVar + 'Class'] = "is-bad";
+            return false;
+        }
+        return true;
+    }
+
     onSave() {
+        const fieldNames = ["name", "birthDate", "address"];
+
+        for (var i=0, length = fieldNames.length; i < length; ++i) {
+            if (!this.checkField(fieldNames[i])) {
+                this.props.createNotification("danger", "Some fields were empty and should'nt be that way, trust me", 3000);
+                this.setState(this.state);
+                return;
+            }
+        }
+
+        if (this.state.pass && this.state.pass != this.state.passAgain) {
+            this.state.passClass = "is-bad";
+            this.state.passAgainClass = "is-bad";
+
+            this.props.createNotification("danger", "Passwords doesn't match", 3000);
+            this.setState(this.state);
+            return;
+        } 
+
         const self = this;
-        AjaxUtils.request('PUT', serverUrls.donors.update + `/${this.props.match.params.userID}`, {
+        AjaxUtils.request('PUT', serverUrls.donors.update(this.props.admin ? this.state.id : this.props.match.params.userID), {
             username: this.state.name,
             password: this.state.pass,
             name: this.state.name,
@@ -98,8 +127,8 @@ class PacientSettingsPage extends React.Component {
                 <div id="title">Settings</div>
                 <div id="registerCnt">
                     { this.renderField({ title: 'Name', inputData: { stateVar: 'name' } }) }
-                    { this.renderField({ title: 'Password', inputData: { stateVar: 'pass' } }) }
-                    { this.renderField({ title: 'Password again', inputData: { stateVar: 'passAgain' } }) }
+                    { this.renderField({ title: 'Password', inputData: { stateVar: 'pass', type: "password" } }) }
+                    { this.renderField({ title: 'Password again', inputData: { stateVar: 'passAgain', type: "password" } }) }
                     { this.renderField({ title: 'Birth date', inputData: { stateVar: 'birthDate', type: "date" } }) }
                     { this.renderField({ title: 'Address', info: '(address from your ID card)', inputData: { stateVar: 'address' } }) }
                     <div className="miniTitle">If you leave in another address than that in your ID card:</div>

@@ -29,8 +29,6 @@ class BoardIndexPage extends React.Component {
         }
 
         this.libraryLoader = new LibraryLoader();
-
-        this.userID = this.props.location.state && this.props.location.state.userID;
     }
 
     componentDidMount() {
@@ -46,7 +44,6 @@ class BoardIndexPage extends React.Component {
             <TopBar key="topBar" userName={this.userName}/>,
             <this.displayBlock
                 key="displayBlock"
-                userID={this.userID}
                 createNotification={(level, message, time) => {
                     this.state.notificationBlock = createNotification(level, message, time);
                     this.setState(this.state);

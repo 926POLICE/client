@@ -26,9 +26,9 @@ class PacientAnalysisHistoryPage extends React.Component {
 
     componentDidMount() {
         const self = this;
-        AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory + '/' + this.props.match.params.userID)
+        AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory(this.props.match.params.userID))
             .then(data => {
-                self.state.data = data;
+                self.state.data = data.filter(donation => donation.pbloodid != -1);
                 self.setState(self.state);
             })
             .catch(req => {
@@ -40,28 +40,35 @@ class PacientAnalysisHistoryPage extends React.Component {
     render() {
         return [
             <Helmet key="helmet">
-                <link rel="stylesheet" href="css/plainBoard.min.css"/>
+                <link rel="stylesheet" href="css/analysisHistory.min.css"/>
             </Helmet>,
             <div key="main" id="mainCnt">
                 <div id="title">Analysis history</div>
                 <table>
                     <thead>
                         <tr>
-                            <th>PatientID</th>
-                            <th>AnalysisResult</th>
-                            <th>ClinicID</th>
+                            <th>Date</th>
+                            <th>Analysis result</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.data.map((row, index) => {
-                            return (
-                                <tr key={`r${index}`}>
-                                    <td>{row.patientID}</td>
-                                    <td>{row.analysisResult.toString()}</td>
-                                    <td>{row.clinicID}</td>
-                                </tr>
-                            )
-                        })}
+                        {
+                            (this.state.data.length > 0)
+                            ?
+                            this.state.data.map((row, index) => {
+                                const date = new Date(row.date);
+                                return (
+                                    <tr key={`r${index}`} className={row.analysisResult ? "goodAnalysis" : "badAnalysis"}>
+                                        <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
+                                        <td>{row.analysisResult ? "Good" : "Bad"}</td>
+                                    </tr>
+                                )
+                            })
+                            :
+                            <tr>
+                                <td colSpan={2}>No analysis have been done</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

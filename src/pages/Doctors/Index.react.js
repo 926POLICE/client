@@ -46,7 +46,7 @@ class DoctorsIndexPage extends React.Component {
         const props = {
             libraryLoader: this.libraryLoader,
             userID: this.props.userID,
-            createNotification: this.props.createNotificaton
+            createNotification: this.props.createNotification
         }
 
         switch (this.props.location.state && this.props.location.state.display) {

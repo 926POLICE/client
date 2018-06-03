@@ -12,7 +12,6 @@ export class MenuItem extends React.Component {
 						display: this.props.display
 					}
 				}}
-				onClick={this.props.onClick}
 			>
 				<div>
 					<span>{this.props.children}</span>
