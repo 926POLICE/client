@@ -13,7 +13,10 @@ class DoctorAvailableStocksPage extends React.Component {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
+            form: {},
+
+            editIndex: null
         }
 
         this.testBlood = this.testBlood.bind(this);
@@ -62,11 +65,11 @@ class DoctorAvailableStocksPage extends React.Component {
                         <tr>
                             <th>Date of collection</th>
                             <th>Quantity</th>
-                            <th>State</th>
                             <th>Type</th>
                             <th>Shelf Life</th>
                             <th>DonationID</th>
                             <th>It is good?</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,30 +78,121 @@ class DoctorAvailableStocksPage extends React.Component {
                             ?
                             this.state.data.map((row, index) => {
                                 const date = new Date(row.collectiondate);
+                                const currentDate = this.state.form.collectiondate ? new Date(this.state.form.collectiondate) : null;
 
                                 return (
                                     <tr key={`r${index}`}>
-                                        <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                        <td>{row.quantity}</td>
-                                        <td>{row.state}</td>
-                                        <td>{
-                                            row.type == "r"
-                                            ?
-                                            "red cells"
-                                            :
-                                            (
-                                                row.type == "p"
+                                        <td>{}
+                                            {
+                                                this.state.editIndex != index
                                                 ?
-                                                "plasma"
+                                                `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
                                                 :
-                                                "thrombocytes"
-                                            )
-                                        }</td>
-                                        <td>{row.shelflife} days</td>
+                                                <input 
+                                                    type="date" 
+                                                    className="form-control"
+                                                    value={`${currentDate.getFullYear()}-${currentDate.getMonth()+1 < 10 ? `0${currentDate.getMonth()+1}` : currentDate.getMonth()+1}-${currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : currentDate.getDate()}`} 
+                                                    onChange={e => { 
+                                                        console.log(e.target.value);
+                                                        this.state.form.collectiondate = new Date(e.target.value).getTime();
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                `${row.quantity}ml`
+                                                :
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control"
+                                                    value={this.state.form.quantity} 
+                                                    onChange={e => { 
+                                                        this.state.form.quntity = parseInt(e.target.value) || 1;
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                row.type == "r"
+                                                ?
+                                                "red cells"
+                                                :
+                                                (
+                                                    row.type == "p"
+                                                    ?
+                                                    "plasma"
+                                                    :
+                                                    "thrombocytes"
+                                                )
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                `${row.shelflife} days`
+                                                :
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control"
+                                                    value={this.state.form.shelflife} 
+                                                    onChange={e => { 
+                                                        this.state.form.shelflife = parseInt(e.target.value) || 1;
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
                                         <td>{row.donationid}</td>
                                         <td>
-                                            <button className="btn btn-success" onClick={() => this.testBlood(true, row.id, index)}>Good</button>
-                                            <button className="btn btn-danger" onClick={() => this.testBlood(false, row.id, index)}>Bad</button>
+                                            {
+                                                this.state.editIndex != index
+                                                &&
+                                                <div>
+                                                    <button className="btn btn-success" onClick={() => this.testBlood(true, row.id, index)}>Good</button>
+                                                    <button className="btn btn-danger" onClick={() => this.testBlood(false, row.id, index)}>Bad</button>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                <button 
+                                                    className="btn btn-warning" 
+                                                    onClick={() => {
+                                                        this.state.form = Object.assign({}, row);
+                                                        this.state.editIndex = index;
+                                                        this.setState(this.state);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                :
+                                                <div>
+                                                    <button
+                                                        className="btn btn-success"
+                                                        onClick={() => this.save(index)}
+                                                    >
+                                                        Save
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-danger"
+                                                        onClick={() => {
+                                                            this.state.editIndex = null;
+                                                            this.setState(this.state);
+                                                        }}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            }
                                         </td>
                                     </tr>
                                 )

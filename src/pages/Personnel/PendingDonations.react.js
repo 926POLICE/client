@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import LibraryLoader from 'utils/LibraryLoader';
@@ -13,18 +13,35 @@ class DoctorAvailableStocksPage extends React.Component {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
+            donors: {}
         }
     }
 
     componentDidMount() {
         const self = this;
+        
+        if (this.props.location.state && this.props.location.state.good) {
+            
+        }
 
         AjaxUtils.request('GET', serverUrls.personnel.getPendingDonations())
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);
               
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+
+        AjaxUtils.request("GET", serverUrls.personnel.getDonors())
+            .then(data => {
+                for (var i=0, length=data.length; i < length; ++i) {
+                    self.state.donors[data[i].id] = data[i];
+                }
+                self.setState(self.state);
             })
             .catch(req => {
                 console.error(req);
@@ -38,55 +55,50 @@ class DoctorAvailableStocksPage extends React.Component {
                 <link rel="stylesheet" href="css/stocks.min.css"/>
             </Helmet>,
             <div key="main" id="mainCnt">
-                <div id="title">Blood stocks</div>
+                <div id="title">Pending donations</div>
                 <table>
                     <thead>
                         <tr>
-                            <th>Date of collection</th>
-                            <th>Quantity</th>
-                            <th>State</th>
-                            <th>Type</th>
-                            <th>Shelf Life</th>
-                            { this.props.admin && <th>DonationID</th> }
+                            <th>Date</th>
+                            <th>PatientID</th>
+                            <th>Patient</th>
+                            <th></th>
                         </tr>
                     </thead>
-
-                      <tbody>
+                    <tbody>
                         {
                             (this.state.data.length > 0)
                             ?
                             this.state.data.map((row, index) => {
-                                const date = new Date(row.collectiondate);
+                                const date = new Date(row.date);
 
                                 return (
                                     <tr key={`r${index}`}>
                                         <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                        <td>{row.quantity}</td>
-                                        <td>{row.state}</td>
-                                        <td>{
-                                            row.type == "r"
-                                            ?
-                                            "red cells"
-                                            :
-                                            (
-                                                row.type == "p"
-                                                ?
-                                                "plasma"
-                                                :
-                                                "thrombocytes"
-                                            )
-                                        }</td>
-                                        <td>{row.shelflife} days</td>
-                                        { this.props.admin && <td>{row.donationid}</td> }
+                                        <td>{row.id}</td>
+                                        <td>{this.state.donors[row.donorid] && this.state.donors[row.donorid].name}</td>
+                                        <td>
+                                            <Link 
+                                                className="btn btn-success"
+                                                to={{
+                                                    pathname: `/board/personnel/pendingdonations/edit/${row.id}/${this.props.match.params.userID}`,
+                                                    state: {
+                                                        display: "PENDING_DONATIONS_EDIT",
+                                                        donorName: this.state.donors[row.donorid] && this.state.donors[row.donorid].name
+                                                    }
+                                                }}
+                                            >
+                                                Set results
+                                            </Link>
+                                        </td>
                                     </tr>
                                 )
                             })
                             :
                             <tr>
-                                <td colSpan={6} style={{textAlign: "center"}}>No stocks</td>
+                                <td colSpan={4} style={{textAlign: "center"}}>No pending donations</td>
                             </tr>
                         }
-
                     </tbody>
                 </table>
             </div>

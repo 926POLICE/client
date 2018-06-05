@@ -29,7 +29,7 @@ class PacientSettingsPage extends React.Component {
 
         AjaxUtils.request("GET", serverUrls.donors.getNextDonation(this.props.match.params.userID))
             .then(data => {
-                if (data <= Date.now()) {
+                if (data > Date.now()) {
                     self.state.slide = 4;
                     self.state.nextDonationDate = new Date(data);
                     self.setState(self.state);
