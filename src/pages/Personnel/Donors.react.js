@@ -15,22 +15,17 @@ class DonorsPage extends React.Component {
         super(props);
 
         this.state = {
-            data: [
-                // {
-                //     id: 10,
-                //     name: "name",
-                //     collectionDate: Date.now(),
-                //     residence: "HERE",
-                //     bloodType: "R1",
-                //     rh: true,
-                //     anticorps: "123"
-                // }
-            ]
+            data: [],
+
+            isLoading: false
         }
     }
 
     componentDidMount() {
         const self = this;
+
+        this.state.isLoading = true;
+        this.setState(this.state);
 
         AjaxUtils.request('GET', serverUrls.donors.getAll)
             .then(data => {
@@ -67,6 +62,12 @@ class DonorsPage extends React.Component {
 
                     <tbody>
                         {
+                            this.state.isLoading
+                            ?
+                            <tr>
+                                <td colSpan={7} style={{textAlign:"center"}}>Loading data...</td>
+                            </tr>
+                            :
                             (this.state.data.length > 0) 
                             ?
                             this.state.data.map((row, index) => {

@@ -20,7 +20,7 @@ class DoctorAvailableStocksPage extends React.Component {
     componentDidMount() {
         const self = this;
 
-        AjaxUtils.request('GET', serverUrls.getBloodStocks)
+        AjaxUtils.request('GET', serverUrls.personnel.getPendingDonations())
             .then(data => {
                 self.state.data = data;
                 self.setState(self.state);

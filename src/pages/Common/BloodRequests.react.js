@@ -29,6 +29,7 @@ class BloodRequestsPage extends React.Component {
         };
 
         this.completeRequest = this.completeRequest.bind(this);
+        this.notifyDonors = this.notifyDonors.bind(this);
     }
 
     componentDidMount() {
@@ -65,6 +66,17 @@ class BloodRequestsPage extends React.Component {
                 } else {
                     self.props.createNotification("danger", "We don't have enough stocks for this request", 2000);
                 }
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+    }
+
+    notifyDonors(patientID) {
+        AjaxUtils.request("PUT", serverUrls.personnel.notifyDonors(patientID))
+            .then(() => {
+                self.props.createNotification("success", "We have notified the donors", 2000);
             })
             .catch(req => {
                 console.error(req);
@@ -126,10 +138,10 @@ class BloodRequestsPage extends React.Component {
                                             this.props.admin
                                             &&
                                             <td>
-                                                <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)}>
-                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)} style={{marginRight:".5rem"}}>
+                                                    Fill
                                                 </button>
-                                                <button key="notifiyDonors" className="btn btn-primary">
+                                                <button key="notifiyDonors" className="btn btn-primary" onClick={() => this.notifyDonors(row.patientid)}>
                                                     Notify donors
                                                 </button>
                                             </td>

@@ -15,6 +15,8 @@ class DoctorAvailableStocksPage extends React.Component {
         this.state = {
             data: []
         }
+
+        this.testBlood = this.testBlood.bind(this);
     }
 
     componentDidMount() {
@@ -25,6 +27,20 @@ class DoctorAvailableStocksPage extends React.Component {
                 self.state.data = data;
                 self.setState(self.state);
               
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+    }
+
+    testBlood(isGood, stockID, index) {
+        AjaxUtils.request("PUT", serverUrls.personnel.testBlood(stockID), { flag: isGood })
+            .then(() => {
+                self.state.data.splice(index, 1);
+                self.setState(self.state);
+
+                self.props.createNotification("success", "The blood stock was updated successfully");
             })
             .catch(req => {
                 console.error(req);
@@ -79,8 +95,8 @@ class DoctorAvailableStocksPage extends React.Component {
                                         <td>{row.shelflife} days</td>
                                         <td>{row.donationid}</td>
                                         <td>
-                                            <button className="btn btn-success">Good</button>
-                                            <button className="btn btn-danger">Bad</button>
+                                            <button className="btn btn-success" onClick={() => this.testBlood(true, row.id, index)}>Good</button>
+                                            <button className="btn btn-danger" onClick={() => this.testBlood(false, row.id, index)}>Bad</button>
                                         </td>
                                     </tr>
                                 )
