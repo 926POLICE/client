@@ -40,6 +40,8 @@ class DoctorAvailableStocksPage extends React.Component {
             .then(data => {
                 self.state.data.splice(index, 1);
                 self.setState(self.state);
+
+                self.props.createNotification("success", "Successfully disposed", 2000);
             })
             .catch(req => {
                 console.error(req);

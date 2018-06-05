@@ -30,6 +30,7 @@ class DonorsPage extends React.Component {
         AjaxUtils.request('GET', serverUrls.donors.getAll)
             .then(data => {
                 self.state.data = data;
+                self.state.isLoading = false;
                 self.setState(self.state);
             })
             .catch(req => {

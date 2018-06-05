@@ -1,4 +1,4 @@
-const base = 'http://aebce84b.ngrok.io';
+const base = 'http://5e4a80b6.ngrok.io';
 
 export default {
     donors: {
@@ -23,7 +23,7 @@ export default {
         getUntestedStock: () => base + '/api/bloodStocksUntested',
         notifyDonors: (patientID) => base + '/api/donors/notify/' + patientID,
         getPendingDonations: () => base + '/api/pendingDonations',
-        testStock: (stockID) => base + '/api/bloodStocksUntested/' + stockID
+        testBlood: (stockID) => base + '/api/bloodStocksUntested/' + stockID
     },
 
     getPatients: base + '/api/patients',
