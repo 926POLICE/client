@@ -17,7 +17,10 @@ export default {
     },
 
     personnel: {
-        completeRequest: (requestID) => base + '/api/requests/' + requestID
+        completeRequest: (requestID) => base + '/api/requests/' + requestID,
+        badStocks: () => base + '/api/bloodStocksUnusable',
+        dispose: (bloodID) => base + '/api/bloodStocksUnusable/' + bloodID,
+        getUntestedStock: () => base + '/api/bloodStocksUntested'
     },
 
     getPatients: base + '/api/patients',

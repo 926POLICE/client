@@ -6,6 +6,9 @@ import BloodRequestPage from 'pages/Common/BloodRequests.react';
 import StocksPage from 'pages/Common/Stocks.react';
 import DonorsPage from './Donors.react';
 import DonorsEditPage from 'pages/Common/Settings.react';
+import PendingDonationsPage from './PendingDonations.react';
+import UntestedStocks from './UntestedStock.react';
+import BadStocks from './BadStock.react';
 
 class PersonnelIndexPage extends React.Component {
     constructor(props) {
@@ -17,6 +20,12 @@ class PersonnelIndexPage extends React.Component {
 			props.location.state = { display: 'DONORS_EDIT' };
 		} else if (props.location.pathname.startsWith('/board/personnel/donors')) {
 			props.location.state = { display: 'DONORS' };
+		} else if (props.location.pathname.startsWith('/board/personnel/pendingdonations')) {
+			props.location.state = { display: 'PENDING_DONATIONS' };
+		} else if (props.location.pathname.startsWith('/board/personnel/untestedstocks')) {
+			props.location.state = { display: 'UNTESTED_STOCKS' };
+		} else if (props.location.pathname.startsWith('/board/personnel/badstocks')) {
+			props.location.state = { display: 'BAD_STOCKS' };
 		} else {
             props.history.push({
                 pathname: '/board/personnel/bloodrequests/' + props.match.params.userID,
@@ -58,6 +67,18 @@ class PersonnelIndexPage extends React.Component {
 
             case 'DONORS_EDIT':
                 displayBlock = <DonorsEditPage {...props}/>;
+                break;
+
+            case 'PENDING_DONATIONS':
+                displayBlock = <PendingDonationsPage {...props}/>;
+                break;
+
+            case 'UNTESTED_STOCKS':
+                displayBlock = <UntestedStocks {...props}/>;
+                break;
+
+            case 'BAD_STOCKS':
+                displayBlock = <BadStocks {...props}/>;
                 break;
 		}
         

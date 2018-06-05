@@ -129,6 +129,9 @@ class BloodRequestsPage extends React.Component {
                                                 <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)}>
                                                     <FontAwesomeIcon icon={faCheck}/>
                                                 </button>
+                                                <button key="notifiyDonors" className="btn btn-primary">
+                                                    Notify donors
+                                                </button>
                                             </td>
                                         }
                                     </tr>
