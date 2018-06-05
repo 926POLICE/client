@@ -32,6 +32,10 @@ class PacientSettingsPage extends React.Component {
                 self.state.residenceAddress = data.residence;
                 self.state.address = data.address;
                 self.state.id = data.id;
+
+                self.state.bloodType = data.bloodtype;
+                self.state.rh = data.rh ? 1 : 0;
+                self.state.anticorps = data.anticorps
                 self.setState(self.state);
             })
             .catch(req => {
@@ -69,7 +73,7 @@ class PacientSettingsPage extends React.Component {
         } 
 
         const self = this;
-        AjaxUtils.request('PUT', serverUrls.donors.update(this.props.admin ? this.state.id : this.props.match.params.userID), {
+        AjaxUtils.request('PUT', serverUrls.donors.update(this.props.admin ? this.props.match.params.donorID : this.props.match.params.userID), {
             username: this.state.name,
             password: this.state.pass,
             name: this.state.name,
@@ -77,7 +81,8 @@ class PacientSettingsPage extends React.Component {
             residence: this.state.residenceAddress || this.state.address,
             address: this.state.address,
             latitude: 100,
-            longitude: 100
+            longitude: 100,
+
         })
             .then(() => {
                 self.props.createNotification("success", "Updated successfully", 2000);
@@ -86,6 +91,25 @@ class PacientSettingsPage extends React.Component {
                 console.error(req);
                 self.props.createNotification("danger", "Something very very wrong happened", 2000);
             })
+
+        if (this.props.admin) {
+            AjaxUtils.request("PUT", serverUrls.personnel.updateDonor(this.props.match.params.donorID), {
+                bloodtype: this.state.bloodType,
+                rh: this.state.rh == 0 ? false : true,
+                anticorps: this.state.anticorps
+            })
+            .then(() => {
+                console.log("DONE", {
+                    bloodtype: this.state.bloodType,
+                    rh: this.state.rh == 0 ? false : true,
+                    anticorps: this.state.anticorps
+                });
+            })
+            .catch(error => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+        }
     }
 
     renderInput(data) {

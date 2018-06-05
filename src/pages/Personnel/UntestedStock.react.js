@@ -20,6 +20,7 @@ class DoctorAvailableStocksPage extends React.Component {
         }
 
         this.testBlood = this.testBlood.bind(this);
+        this.save = this.save.bind(this);
     }
 
     componentDidMount() {
@@ -40,12 +41,29 @@ class DoctorAvailableStocksPage extends React.Component {
     testBlood(isGood, stockID, index) {
         const self = this;
         
-        AjaxUtils.request("PUT", serverUrls.personnel.testBlood(stockID), { flag: isGood })
+        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), { flag: isGood })
             .then(() => {
                 self.state.data.splice(index, 1);
                 self.setState(self.state);
 
-                self.props.createNotification("success", "The blood stock was updated successfully");
+                self.props.createNotification("success", "The blood stock was updated successfully", 2000);
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+    }
+
+    save(index) {
+        const self = this;
+
+        AjaxUtils.request("PUT", serverUrls.personnel.updateStock(this.state.form.id), this.state.form)
+            .then(() => {
+                self.state.data[index] = Object.assign({}, this.state.form);
+                self.state.editIndex = null;
+                self.setState(self.state);
+
+                self.props.createNotification("success", "The blood stock was updated successfully", 2000);
             })
             .catch(req => {
                 console.error(req);
@@ -78,7 +96,7 @@ class DoctorAvailableStocksPage extends React.Component {
                             ?
                             this.state.data.map((row, index) => {
                                 const date = new Date(row.collectiondate);
-                                const currentDate = this.state.form.collectiondate ? new Date(this.state.form.collectiondate) : null;
+                                const currentDate = this.state.form.collectiondate ? new Date(this.state.form.collectiondate).toISOString().substring(0, 10) : null;
 
                                 return (
                                     <tr key={`r${index}`}>
@@ -91,7 +109,7 @@ class DoctorAvailableStocksPage extends React.Component {
                                                 <input 
                                                     type="date" 
                                                     className="form-control"
-                                                    value={`${currentDate.getFullYear()}-${currentDate.getMonth()+1 < 10 ? `0${currentDate.getMonth()+1}` : currentDate.getMonth()+1}-${currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : currentDate.getDate()}`} 
+                                                    value={currentDate} 
                                                     onChange={e => { 
                                                         console.log(e.target.value);
                                                         this.state.form.collectiondate = new Date(e.target.value).getTime();
@@ -111,7 +129,7 @@ class DoctorAvailableStocksPage extends React.Component {
                                                     className="form-control"
                                                     value={this.state.form.quantity} 
                                                     onChange={e => { 
-                                                        this.state.form.quntity = parseInt(e.target.value) || 1;
+                                                        this.state.form.quantity = parseInt(e.target.value) || 1;
                                                         this.setState(this.state);
                                                     }}
                                                 />

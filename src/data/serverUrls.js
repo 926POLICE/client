@@ -25,7 +25,9 @@ export default {
         getPendingDonations: () => base + '/api/pendingDonations',
         testBlood: (stockID) => base + '/api/bloodStocksUntested/' + stockID,
         getDonors: () => base + '/api/donors',
-        collectBlood: () => base + '/api/bloodStocksUntested'
+        collectBlood: () => base + '/api/bloodStocksUntested',
+        updateStock: (bloodID) => base + '/api/bloodStocks/' + bloodID,
+        updateDonor: (donorID) => base + '/api/donors/info/' + donorID
     },
 
     getPatients: base + '/api/patients',

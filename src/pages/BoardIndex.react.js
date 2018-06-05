@@ -45,7 +45,7 @@ class BoardIndexPage extends React.Component {
             <this.displayBlock
                 key="displayBlock"
                 createNotification={(level, message, time) => {
-                    this.state.notificationBlock = createNotification(level, message, time);
+                    this.state.notificationBlock = createNotification(level, message, time = 2000);
                     this.setState(this.state);
                 }}
             />
