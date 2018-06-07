@@ -9,6 +9,7 @@ import serverUrls from 'data/serverUrls';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faPencil from '@fortawesome/fontawesome-free-solid/faPencilAlt'
+import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
 
 class DonorsPage extends React.Component {
     constructor(props) {
@@ -17,15 +18,12 @@ class DonorsPage extends React.Component {
         this.state = {
             data: [],
 
-            isLoading: false
+            isLoading: true
         }
     }
 
     componentDidMount() {
         const self = this;
-
-        this.state.isLoading = true;
-        this.setState(this.state);
 
         AjaxUtils.request('GET', serverUrls.donors.getAll)
             .then(data => {
@@ -66,7 +64,9 @@ class DonorsPage extends React.Component {
                             this.state.isLoading
                             ?
                             <tr>
-                                <td colSpan={7} style={{textAlign:"center"}}>Loading data...</td>
+                                <td colSpan={7} style={{textAlign: "center"}}>
+                                    <FontAwesomeIcon icon={faSpinner} size='3x' spin/>
+                                </td>
                             </tr>
                             :
                             (this.state.data.length > 0) 

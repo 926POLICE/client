@@ -8,6 +8,9 @@ import AjaxUtils from 'utils/AjaxUtils.js';
 import serverUrls from 'data/serverUrls';
 import createNotification from 'utils/createNotification.js';
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
+
 class DoctorAvailableStocksPage extends React.Component {
     constructor(props) {
         super(props);
@@ -41,7 +44,7 @@ class DoctorAvailableStocksPage extends React.Component {
     testBlood(isGood, stockID, index) {
         const self = this;
         
-        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), { flag: isGood })
+        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), isGood)
             .then(() => {
                 self.state.data.splice(index, 1);
                 self.setState(self.state);

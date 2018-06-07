@@ -11,6 +11,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faPencil from '@fortawesome/fontawesome-free-solid/faPencilAlt'
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck'
 import faTimes from '@fortawesome/fontawesome-free-solid/faTimes'
+import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
 
 class BloodRequestsPage extends React.Component {
     constructor(props) {
@@ -19,7 +20,9 @@ class BloodRequestsPage extends React.Component {
         this.state = {
             data: [],
 
-            editIndex: -1
+            editIndex: -1,
+
+            isLoading: true
         }
 
         this.urgencyLevels = {
@@ -38,6 +41,7 @@ class BloodRequestsPage extends React.Component {
         AjaxUtils.request('GET', this.props.admin ? serverUrls.getBloodRequests : serverUrls.doctors.getBloodRequests(this.props.match.params.userID))
             .then(data => {
                 self.state.data = data;
+                self.state.isLoading = false;
                 self.setState(self.state);
             })
             .catch(req => {
@@ -74,6 +78,7 @@ class BloodRequestsPage extends React.Component {
     }
 
     notifyDonors(patientID) {
+        const self = this;
         AjaxUtils.request("PUT", serverUrls.personnel.notifyDonors(patientID))
             .then(() => {
                 self.props.createNotification("success", "We have notified the donors", 2000);
@@ -118,12 +123,20 @@ class BloodRequestsPage extends React.Component {
                             <th>Plasma Quantity</th>
                             <th>Thrombocytes Quantity</th>
                             <th>Priority</th>
-                            { this.props.admin && <th></th> }
+                            <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {
+                            this.state.isLoading
+                            ?
+                            <tr>
+                                <td colSpan={ this.props.admin ? 6 : 5 } style={{textAlign: "center"}}>
+                                    <FontAwesomeIcon icon={faSpinner} size='3x' spin/>
+                                </td>
+                            </tr>
+                            :
                             (this.state.data.length > 0)
                             ?
                             this.state.data.map((row, index) => {
@@ -136,7 +149,7 @@ class BloodRequestsPage extends React.Component {
                                         <td key="prority">{this.urgencyLevels[row.priority]}</td>
                                         {
                                             this.props.admin
-                                            &&
+                                            ?
                                             <td>
                                                 <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)} style={{marginRight:".5rem"}}>
                                                     Fill
@@ -145,13 +158,15 @@ class BloodRequestsPage extends React.Component {
                                                     Notify donors
                                                 </button>
                                             </td>
+                                            :
+                                            <td>Not completed</td>
                                         }
                                     </tr>
                                 )
                             })
                             :
                             <tr>
-                                <td colSpan={ this.props.admin ? 6 : 5 } style={{textAlign: "center"}}>No requests</td>
+                                <td colSpan={6} style={{textAlign: "center"}}>No requests</td>
                             </tr>
                         }
 

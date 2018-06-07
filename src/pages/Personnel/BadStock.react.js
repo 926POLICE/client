@@ -8,12 +8,17 @@ import AjaxUtils from 'utils/AjaxUtils.js';
 import serverUrls from 'data/serverUrls';
 import createNotification from 'utils/createNotification.js';
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
+
 class DoctorAvailableStocksPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
+
+            isLoading: true
         }
 
         this.dispose = this.dispose.bind(this);
@@ -25,6 +30,7 @@ class DoctorAvailableStocksPage extends React.Component {
         AjaxUtils.request('GET', serverUrls.personnel.badStocks())
             .then(data => {
                 self.state.data = data;
+                self.state.isLoading = false;
                 self.setState(self.state);
             })
             .catch(req => {
@@ -71,6 +77,14 @@ class DoctorAvailableStocksPage extends React.Component {
 
                       <tbody>
                         {
+                            this.state.isLoading
+                            ?
+                            <tr>
+                                <td colSpan={7} style={{textAlign: "center"}}>
+                                    <FontAwesomeIcon icon={faSpinner} size='3x' spin/>
+                                </td>
+                            </tr>
+                            :
                             (this.state.data.length > 0)
                             ?
                             this.state.data.map((row, index) => {

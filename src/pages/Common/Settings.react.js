@@ -204,6 +204,15 @@ class PacientSettingsPage extends React.Component {
                                     </div>
                                 </div>
                                 { this.renderField({ title: 'Anticorps', inputData: { stateVar: 'anticorps' } }) }
+                                <div>
+                                    <div className="row">
+                                        <div className="col-3">Is eligible:</div>    
+                                        <div className="col-9">
+                                            <button className="btn" style={{marginRight: '1rem'}}>Eligible</button>
+                                            <button className="btn">Not eligible</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ]
                     }
@@ -213,7 +222,5 @@ class PacientSettingsPage extends React.Component {
         ];
     }
 };
-
-
 
 export default withRouter(PacientSettingsPage);
