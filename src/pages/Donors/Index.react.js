@@ -99,7 +99,7 @@ class DonorsIndexPage extends React.Component {
             this.state.showNotification
             &&
             <div key="notfCnt" id="notfCnt">
-                <div>We need you BLOOD</div>
+                <div>A compatible patient needs blood right now. If possible, make a donation appointment and go to the clinic to donate as soon as you can.</div>
                 <div><FontAwesomeIcon icon={faTimes} onClick={() => { this.state.showNotification = false; this.setState(this.state); }}/></div>
             </div>,
             <div key="rootCnt" id="rootCnt">
