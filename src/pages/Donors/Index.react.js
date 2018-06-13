@@ -8,6 +8,7 @@ import DonateBloodPage from './DonateBlood.react';
 import DonorsettingsPage from 'pages/Common/Settings.react';
 import DonorAnalysisHistoryPage from './AnalysisHistory.react';
 import DonorMedicalHistoryPage from './MedicalHistory.react';
+import JourneyPage from './BloodJourney.react';
 
 import AjaxUtils from 'utils/AjaxUtils.js';
 import serverUrls from '../../data/serverUrls';
@@ -27,6 +28,8 @@ class DonorsIndexPage extends React.Component {
             props.location.state = { display: 'HISTORY' }; 
         } else if (props.location.pathname.startsWith('/board/donors/medicalhistory')) { // copy and modify this as required
             props.location.state = { display: 'MHISTORY' }; 
+        } else if (props.location.pathname.startsWith('/board/donors/bloodjourney')) { // copy and modify this as required
+            props.location.state = { display: 'JOURNEY' }; 
         } else {
             props.history.push({
                 pathname: '/board/donors/donate/' + props.match.params.userID,
@@ -86,6 +89,9 @@ class DonorsIndexPage extends React.Component {
                 break;
             case 'MHISTORY':
                 displayBlock = <DonorMedicalHistoryPage {...props}/>;
+                break;
+            case 'JOURNEY':
+                displayBlock = <JourneyPage {...props}/>;
                 break;
 		}
         
