@@ -31,7 +31,8 @@ export default {
         updateStock: (bloodID) => base + '/api/bloodStocks/' + bloodID,
         updateDonor: (donorID) => base + '/api/donors/info/' + donorID,
         getEligible: (donorID) => base + "/api/donors/eligibility/" + donorID,
-        setEligible: (donorID) => base + "/api/donors/eligibility/" + donorID
+        setEligible: (donorID) => base + "/api/donors/eligibility/" + donorID,
+        deleteRequest: (requestID) => base + "/api/pendingDonations/" + requestID
     },
 
     getPatients: base + '/api/patients',

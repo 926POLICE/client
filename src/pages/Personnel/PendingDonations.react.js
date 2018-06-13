@@ -21,6 +21,8 @@ class DoctorAvailableStocksPage extends React.Component {
 
             isLoading: true
         }
+
+        this.deleteRequest = this.deleteRequest.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +47,21 @@ class DoctorAvailableStocksPage extends React.Component {
                     self.state.donors[data[i].id] = data[i];
                 }
                 self.setState(self.state);
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+    }
+
+    deleteRequest(index) {
+        const self = this;
+        AjaxUtils.request("DELETE", serverUrls.personnel.deleteRequest(this.state.data[index].id))
+            .then(() => {
+                self.state.data.splice(index, 1);
+                self.setState(self.state);
+
+                self.props.createNotification("success", "Deleted successfully", 2000);
             })
             .catch(req => {
                 console.error(req);
@@ -93,7 +110,7 @@ class DoctorAvailableStocksPage extends React.Component {
                                         {
                                             !this.state.donors[row.donorid].eligibility
                                             ?
-                                            <td>Not eligible</td>
+                                            <td>Not eligible <button className="btn mainBtn" onClick={() => this.deleteRequest(index)}>Delete request</button></td>
                                             :
                                             (
                                                 !this.state.donors[row.donorid].bloodtype
