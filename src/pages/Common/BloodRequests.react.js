@@ -102,7 +102,7 @@ class BloodRequestsPage extends React.Component {
                         &&
                         <div id="buttonsCnt">
                             <Link 
-                                className="btn btn-success"
+                                className="btn mainBtn"
                                 to={{
                                     pathname: "/board/doctors/bloodrequests/add/" + this.props.match.params.userID,
                                     state: {
@@ -151,10 +151,10 @@ class BloodRequestsPage extends React.Component {
                                             this.props.admin
                                             ?
                                             <td>
-                                                <button key="successBtn" className="btn btn-success" onClick={() => this.completeRequest(row.id)} style={{marginRight:".5rem"}}>
+                                                <button key="successBtn" className="btn mainBtn" onClick={() => this.completeRequest(row.id)} style={{marginRight:".5rem"}}>
                                                     Fill
                                                 </button>
-                                                <button key="notifiyDonors" className="btn btn-primary" onClick={() => this.notifyDonors(row.patientid)}>
+                                                <button key="notifiyDonors" className="btn mainBtn" onClick={() => this.notifyDonors(row.patientid)}>
                                                     Notify donors
                                                 </button>
                                             </td>

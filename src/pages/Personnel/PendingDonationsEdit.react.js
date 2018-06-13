@@ -115,7 +115,7 @@ class PendingDonationsEdit extends React.Component {
                     />
                 </FormInput>
                 <div>
-                    <button className="btn btn-success" onClick={this.save}>Save</button>
+                    <button className="btn mainBtn" onClick={this.save}>Save</button>
                 </div>
             </div>
         ]

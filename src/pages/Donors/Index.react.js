@@ -7,6 +7,13 @@ import Menu from 'components/Donors/Menu.react.js';
 import DonateBloodPage from './DonateBlood.react';
 import DonorsettingsPage from 'pages/Common/Settings.react';
 import DonorAnalysisHistoryPage from './AnalysisHistory.react';
+import DonorMedicalHistoryPage from './MedicalHistory.react';
+
+import AjaxUtils from 'utils/AjaxUtils.js';
+import serverUrls from '../../data/serverUrls';
+
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faTimes from '@fortawesome/fontawesome-free-solid/faTimes'
 
 // here add the next pages
 
@@ -18,6 +25,8 @@ class DonorsIndexPage extends React.Component {
             props.location.state = { display: 'SETTINGS' };
         } else if (props.location.pathname.startsWith('/board/donors/history')) { // copy and modify this as required
             props.location.state = { display: 'HISTORY' }; 
+        } else if (props.location.pathname.startsWith('/board/donors/medicalhistory')) { // copy and modify this as required
+            props.location.state = { display: 'MHISTORY' }; 
         } else {
             props.history.push({
                 pathname: '/board/donors/donate/' + props.match.params.userID,
@@ -27,7 +36,27 @@ class DonorsIndexPage extends React.Component {
 
         super(props);
 
+        this.state = {
+            showNotification: false
+        }
+
         this.libraryLoader = new LibraryLoader();
+    }
+
+    componentDidMount() {
+        const self = this;
+
+        AjaxUtils.request("GET", serverUrls.donors.getNotification(this.props.match.params.userID))
+            .then(data => {
+                if (data) {
+                    self.state.showNotification = true;
+                    self.setState(self.state);
+                }
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -55,14 +84,23 @@ class DonorsIndexPage extends React.Component {
             case 'HISTORY':
                 displayBlock = <DonorAnalysisHistoryPage {...props}/>;
                 break;
+            case 'MHISTORY':
+                displayBlock = <DonorMedicalHistoryPage {...props}/>;
+                break;
 		}
         
-        return (
-            <div id="rootCnt">
+        return [
+            this.state.showNotification
+            &&
+            <div key="notfCnt" id="notfCnt">
+                <div>We need you BLOOD</div>
+                <div><FontAwesomeIcon icon={faTimes} onClick={() => { this.state.showNotification = false; this.setState(this.state); }}/></div>
+            </div>,
+            <div key="rootCnt" id="rootCnt">
                 <Menu userID={this.props.match.params.userID}/>
                 { displayBlock }
             </div>
-        )
+        ]
     }
 };
 

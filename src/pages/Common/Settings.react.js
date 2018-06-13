@@ -12,12 +12,19 @@ class PacientSettingsPage extends React.Component {
         super(props);
 
         this.state = {
+            medicalHistory: [],
 
+            eligible: false
         }
 
         if (this.props.admin) {
             this.bloodTypes = ["A", "B", "AB", "0"];
         }
+
+        this.eligibleValues = [
+            { text: "Eligible", value: true },
+            { text: "Not eligible", value: false }
+        ]
 
         this.onSave = this.onSave.bind(this);
         this.checkField = this.checkField.bind(this);
@@ -32,6 +39,12 @@ class PacientSettingsPage extends React.Component {
                 self.state.residenceAddress = data.residence;
                 self.state.address = data.address;
                 self.state.id = data.id;
+                self.state.data = Object.assign({}, data);
+
+                self.state.medicalHistory = data.medicalHistory
+                    .split(/\n/)
+                    .filter(e => e.length ? true : false)
+                    .map(e => { let a = e.split(":"); return { date: a[0], message: a[1].replace(/\"/g, "") } });
 
                 self.state.bloodType = data.bloodtype;
                 self.state.rh = data.rh ? 1 : 0;
@@ -42,6 +55,18 @@ class PacientSettingsPage extends React.Component {
                 console.error(req);
                 self.props.createNotification("danger", "Something very very wrong happened", 2000);
             })
+
+        if (this.props.admin) {
+            AjaxUtils.request("GET", serverUrls.personnel.getEligible(this.props.match.params.donorID))
+                .then(data => {
+                    self.state.eligible = data;
+                    self.setState(self.state);
+                })
+                .catch(req => {
+                    console.error(req);
+                    self.props.createNotification("danger", "Something very very wrong happened", 2000);
+                })
+        }
     }
 
     checkField(stateVar) {
@@ -80,14 +105,14 @@ class PacientSettingsPage extends React.Component {
             birthday: new Date(this.state.birthDate).getTime(),
             residence: this.state.residenceAddress || this.state.address,
             address: this.state.address,
-            latitude: 100,
-            longitude: 100,
+            latitude: this.state.data.latitude,
+            longitude: this.state.data.longitude,
 
         })
             .then(() => {
                 self.props.createNotification("success", "Updated successfully", 2000);
             })
-            .catch(error => {
+            .catch(req => {
                 console.error(req);
                 self.props.createNotification("danger", "Something very very wrong happened", 2000);
             })
@@ -98,17 +123,26 @@ class PacientSettingsPage extends React.Component {
                 rh: this.state.rh == 0 ? false : true,
                 anticorps: this.state.anticorps
             })
-            .then(() => {
-                console.log("DONE", {
-                    bloodtype: this.state.bloodType,
-                    rh: this.state.rh == 0 ? false : true,
-                    anticorps: this.state.anticorps
-                });
-            })
-            .catch(error => {
-                console.error(req);
-                self.props.createNotification("danger", "Something very very wrong happened", 2000);
-            })
+                .then(() => {
+                    console.log("DONE", {
+                        bloodtype: this.state.bloodType,
+                        rh: this.state.rh == 0 ? false : true,
+                        anticorps: this.state.anticorps
+                    });
+                })
+                .catch(req => {
+                    console.error(req);
+                    self.props.createNotification("danger", "Something very very wrong happened", 2000);
+                })
+
+            AjaxUtils.request("PUT", serverUrls.personnel.setEligible(this.props.match.params.donorID), this.state.eligible)
+                .then(() => {
+                    console.log("FOOD");
+                })
+                .catch(req => {
+                    console.error(req);
+                    self.props.createNotification("danger", "Something very very wrong happened", 2000);
+                })
         }
     }
 
@@ -208,16 +242,63 @@ class PacientSettingsPage extends React.Component {
                                     <div className="row">
                                         <div className="col-3">Is eligible:</div>    
                                         <div className="col-9">
-                                            <button className="btn" style={{marginRight: '1rem'}}>Eligible</button>
-                                            <button className="btn">Not eligible</button>
+                                            {
+                                                this.eligibleValues.map(d => {
+                                                    return (
+                                                        <input 
+                                                            key={`eligibleValues${d.value}`}
+                                                            type="button" 
+                                                            className={`btn btn-selectable ${this.state.eligible == d.value ? "mainBtn" : "btn-notselected"}`} 
+                                                            value={d.text}
+                                                            onClick={() => {
+                                                                this.state.eligible = d.value;
+                                                                this.setState(this.state);
+                                                            }}
+                                                        />
+                                                    )
+                                                })
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         ]
                     }
-                    <button className="btn btn-success" onClick={this.onSave}>Save</button>
+                    <button className="btn mainBtn" onClick={this.onSave}>Save</button>
                 </div>
+                {
+                    this.props.admin
+                    &&
+                    <div id="mhistoryCnt">
+                        <div className="title">Medical history</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Log</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    (this.state.medicalHistory.length > 0)
+                                    ?
+                                    this.state.medicalHistory.map((log, index) => {
+                                        return (
+                                            <tr key={`log${index}`}>
+                                                <td>{log.date}</td>
+                                                <td>{log.message}</td>
+                                            </tr>
+                                        )
+                                    })
+                                    :
+                                    <tr>
+                                        <td colSpan={2}>No history</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         ];
     }

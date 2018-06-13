@@ -1,14 +1,20 @@
 @import "board.less";
+@import "variables.less";
 
 .slide {
     display: flex;
     flex-direction: column;
 
+    td, th {
+        text-align: left;
+        padding: 8px 16px;
+    }
+
     tbody > tr {
         cursor: pointer;
 
         &:hover {
-            background-color: #889bff;
+            background-color: #cce5ff;
         }
     }
 }
@@ -27,14 +33,15 @@
     background-color: #ececec;
     border-radius: .5rem;
     text-align: center;
+    font-size: 18px;
 }
 
 .goodCnt {
-    background-color: #00b900;
+    background-color: @mainColor;
     color: #fff;
 }
 
 .badCnt {
-    background-color: #d41b1b;
+    background-color: #ff6969;
     color: #fff;
 }

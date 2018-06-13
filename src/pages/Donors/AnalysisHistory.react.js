@@ -29,6 +29,21 @@ class PacientAnalysisHistoryPage extends React.Component {
         AjaxUtils.request('GET', serverUrls.donors.getAnalysisHistory(this.props.match.params.userID))
             .then(data => {
                 self.state.data = data.filter(donation => donation.pbloodid != -1);
+
+                for (var i=0, length=self.state.data.length; i < length; ++i) {
+                    if (self.state.data[i].patientid != -1) {
+                        AjaxUtils.request('GET', serverUrls.checkCompatibility(), { patientid: self.state.data[i].patientid, donorid: this.props.match.params.userID })
+                            .then(data => {
+                                self.state.data[i].compatible = data;
+                                self.setState(self.state);
+                            })
+                            .catch(req => {
+                                console.error(req);
+                                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+                            })
+                    }
+                }
+
                 self.setState(self.state);
             })
             .catch(req => {
@@ -48,6 +63,7 @@ class PacientAnalysisHistoryPage extends React.Component {
                     <thead>
                         <tr>
                             <th>Date</th>
+                            <th>Compatible with the person</th>
                             <th>Analysis result</th>
                         </tr>
                     </thead>
@@ -60,13 +76,14 @@ class PacientAnalysisHistoryPage extends React.Component {
                                 return (
                                     <tr key={`r${index}`} className={row.analysisResult ? "goodAnalysis" : "badAnalysis"}>
                                         <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
+                                        <td>{ row.compatible === undefined ? "" : (row.compatible ? "Yes" : "No") }</td>
                                         <td>{row.analysisResult ? "Good" : "Bad"}</td>
                                     </tr>
                                 )
                             })
                             :
                             <tr>
-                                <td colSpan={2}>No analysis have been done</td>
+                                <td colSpan={3}>No analysis have been done</td>
                             </tr>
                         }
                     </tbody>

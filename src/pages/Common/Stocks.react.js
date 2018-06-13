@@ -17,9 +17,13 @@ class DoctorAvailableStocksPage extends React.Component {
 
         this.state = {
             data: [],
+            form: {},
 
-            isLoading: true
+            isLoading: true,
+            editIndex: null
         }
+
+        this.save = this.save.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +35,23 @@ class DoctorAvailableStocksPage extends React.Component {
                 self.state.isLoading = false;
                 self.setState(self.state);
               
+            })
+            .catch(req => {
+                console.error(req);
+                self.props.createNotification("danger", "Something very very wrong happened", 2000);
+            })
+    }
+
+    save(index) {
+        const self = this;
+
+        AjaxUtils.request("PUT", serverUrls.personnel.updateStock(this.state.form.id), this.state.form)
+            .then(() => {
+                self.state.data[index] = Object.assign({}, this.state.form);
+                self.state.editIndex = null;
+                self.setState(self.state);
+
+                self.props.createNotification("success", "The blood stock was updated successfully", 2000);
             })
             .catch(req => {
                 console.error(req);
@@ -50,10 +71,10 @@ class DoctorAvailableStocksPage extends React.Component {
                         <tr>
                             <th>Date of collection</th>
                             <th>Quantity</th>
-                            <th>State</th>
                             <th>Type</th>
                             <th>Shelf Life</th>
                             { this.props.admin && <th>DonationID</th> }
+                            { this.props.admin && <th></th> }
                         </tr>
                     </thead>
 
@@ -62,7 +83,7 @@ class DoctorAvailableStocksPage extends React.Component {
                             this.state.isLoading
                             ?
                             <tr>
-                                <td colSpan={6} style={{textAlign: "center"}}>
+                                <td colSpan={this.props.admin ? 7 : 6} style={{textAlign: "center"}}>
                                     <FontAwesomeIcon icon={faSpinner} size='3x' spin/>
                                 </td>
                             </tr>
@@ -71,12 +92,46 @@ class DoctorAvailableStocksPage extends React.Component {
                             ?
                             this.state.data.map((row, index) => {
                                 const date = new Date(row.collectiondate);
+                                const currentDate = this.state.form.collectiondate ? new Date(this.state.form.collectiondate).toISOString().substring(0, 10) : null;
 
                                 return (
                                     <tr key={`r${index}`}>
-                                        <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                        <td>{row.quantity}</td>
-                                        <td>{row.state}</td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+                                                :
+                                                <input 
+                                                    type="date" 
+                                                    className="form-control"
+                                                    value={currentDate} 
+                                                    onChange={e => { 
+                                                        console.log(e.target.value);
+                                                        this.state.form.collectiondate = new Date(e.target.value).getTime();
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                `${row.quantity}ml`
+                                                :
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control"
+                                                    value={this.state.form.quantity} 
+                                                    onChange={e => { 
+                                                        this.state.form.quantity = parseInt(e.target.value) || this.state.data[this.state.editIndex].quantity;
+
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
                                         <td>{
                                             row.type == "r"
                                             ?
@@ -90,14 +145,69 @@ class DoctorAvailableStocksPage extends React.Component {
                                                 "thrombocytes"
                                             )
                                         }</td>
-                                        <td>{row.shelflife} days</td>
+                                        <td>
+                                            {
+                                                this.state.editIndex != index
+                                                ?
+                                                `${row.shelflife} days`
+                                                :
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control"
+                                                    value={this.state.form.shelflife} 
+                                                    onChange={e => { 
+                                                        this.state.form.shelflife = parseInt(e.target.value) || 1;
+                                                        this.setState(this.state);
+                                                    }}
+                                                />
+                                            }
+                                        </td>
                                         { this.props.admin && <td>{row.donationid}</td> }
+                                        { 
+                                            this.props.admin
+                                            &&
+                                            <td>
+                                                {
+                                                    this.state.editIndex != index
+                                                    ?
+                                                    <button 
+                                                        className="btn mainBtn" 
+                                                        onClick={() => {
+                                                            this.state.form = Object.assign({}, row);
+                                                            this.state.editIndex = index;
+                                                            this.setState(this.state);
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    :
+                                                    <div style={{display: 'flex', flexWrap: 'nowrap'}}>
+                                                        <button
+                                                            className="btn mainBtn"
+                                                            style={{marginRight: ".5rem"}}
+                                                            onClick={() => this.save(index)}
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-danger"
+                                                            onClick={() => {
+                                                                this.state.editIndex = null;
+                                                                this.setState(this.state);
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </td>
+                                        }
                                     </tr>
                                 )
                             })
                             :
                             <tr>
-                                <td colSpan={6} style={{textAlign: "center"}}>No stocks</td>
+                                <td colSpan={this.props.admin ? 7 : 6} style={{textAlign: "center"}}>No stocks</td>
                             </tr>
                         }
 

@@ -124,7 +124,7 @@ class PacientSettingsPage extends React.Component {
                     <div className="slide slide-inline">
                         <div>Do you want to donate blood?</div>
                         <button 
-                            className="btn btn-primary"
+                            className="btn mainBtn"
                             onClick={() => {
                                 this.state.slide = 1;
                                 this.setState(this.state);
@@ -139,8 +139,8 @@ class PacientSettingsPage extends React.Component {
                     &&
                     <div className="slide slide-inline">
                         <div>Do you want to donate blood for a specific person?</div>
-                        <button className="btn btn-success" onClick={this.onGetPatients}>Yes</button>
-                        <button className="btn btn-danger" onClick={this.onDonate}>No</button>
+                        <button className="btn mainBtn" onClick={this.onGetPatients}>Yes</button>
+                        <button className="btn mainBtn" onClick={this.onDonate}>No</button>
                     </div>
                 }
                 {

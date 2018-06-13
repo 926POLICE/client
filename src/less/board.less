@@ -1,4 +1,9 @@
 @import "global.less";
+@import "variables.less";
+
+body {
+    background-color: #eee;
+}
 
 #rootCnt {
     display: flex;
@@ -24,12 +29,12 @@
         }
 
         &:hover {
-            background-color: #3a30b9;
+            background-color: #1d78d4;
         }
     }
 
     .active {
-        background-color: #594fd8;
+        background-color: @mainColor;
     }
 }
 
@@ -40,6 +45,7 @@
     padding: 1rem;
     flex: 1;
     border-radius: .5rem;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
 #title {
@@ -55,10 +61,12 @@
 
 table {
     width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    border-radius: .5rem;
     
     thead {
         tr {
-            background-color: #3b4a9c;
+            background-color: @mainColor;
             color: #fff;
 
             th {
@@ -88,11 +96,11 @@ table {
 
             &:last-child {
                 td:first-child {
-                    border-radius: 0 0 0 .5rem;
+                    border-bottom-left-radius: .5rem;
                 }
 
                 td:last-child {
-                    border-radius: 0 0 .5rem 0;
+                    border-bottom-right-radius: .5rem;
                 }
             }
 
@@ -164,5 +172,33 @@ svg {
         width: 1.2rem;
         height: 1.2rem;
         cursor: pointer;
+        color: #000;
+    }
+}
+
+#notfCnt {
+    margin: 1rem 1rem 0 1rem;
+    padding: 10px 10px 10px 2rem;
+    background-color: @mainColor;
+    border-radius: .5rem;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+        cursor: pointer;
+    }
+}
+
+.mainBtn {
+    background-color: #006ad5;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    color: #fff;
+    border: 0;
+
+    &:hover {
+        background-color: #0b68c5;
+        color: #fff;
     }
 }

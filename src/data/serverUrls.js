@@ -1,4 +1,4 @@
-const base = 'http://8c33b1f0.ngrok.io';
+const base = 'http://1e31df3b.ngrok.io';
 
 export default {
     donors: {
@@ -8,7 +8,9 @@ export default {
         update: (clientID) => base + '/api/donors/' + clientID,
         donate: () => base + '/api/donations/',
         getAll: base + '/api/donors',
-        getNextDonation: (clientID) => base + '/api/donors/nextDonation/' + clientID
+        getNextDonation: (clientID) => base + '/api/donors/nextDonation/' + clientID,
+        getNotification: (clientID) => base + '/api/donors/notified/' + clientID,
+        addMedicalHistory: (clientID) => base + '/api/donors/history/' + clientID
     },
 
     doctors: {
@@ -27,12 +29,16 @@ export default {
         getDonors: () => base + '/api/donors',
         collectBlood: () => base + '/api/bloodStocksUntested',
         updateStock: (bloodID) => base + '/api/bloodStocks/' + bloodID,
-        updateDonor: (donorID) => base + '/api/donors/info/' + donorID
+        updateDonor: (donorID) => base + '/api/donors/info/' + donorID,
+        getEligible: (donorID) => base + "/api/donors/eligibility/" + donorID,
+        setEligible: (donorID) => base + "/api/donors/eligibility/" + donorID
     },
 
     getPatients: base + '/api/patients',
     getBloodRequests: base + '/api/requests',
     getBloodStocks: base + '/api/bloodStocks',
+    getMedicalHistory: (clientID) => base + '/api/donors/history/' + clientID,
+    checkCompatibility: () => base + '/api/donors/compatibility',
 
     login: {
         url: base + '/api/login',

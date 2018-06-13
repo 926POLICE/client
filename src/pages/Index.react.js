@@ -27,10 +27,15 @@ class IndexPage extends React.Component {
     }
     
     componentDidMount() {
-
+        if (this.props.location && this.props.location.state) {
+            this.state.notificationBlock = createNotification("success", "Success! Now you can login", 2000);
+            this.setState(this.state);
+        }
     }
 
-    onSubmit() {
+    onSubmit(e) {
+        e.preventDefault();
+
         if (!this.state.username || !this.state.password) {
             this.state.notificationBlock = createNotification("danger", "Please give me an username and a password first", 2000);
             this.setState(this.state);
@@ -78,54 +83,59 @@ class IndexPage extends React.Component {
     render() {
         return [
             <Helmet key="helmet">
-                <link rel="stylesheet" href="css/index.min.css"/>
             </Helmet>,
             <div key="main" id="rootCnt">
                 { this.state.notificationBlock }
                 <div id="slide1" className="row">
-                    <div className="col-12 col-lg-8"></div>
-                    <div id="loginCnt" className="col-12 col-lg-4">
-                        <div>
-                            <div id="title">I want to donate blood!</div>
-                            <Link className="btn btn-block btn-danger" to='/register'>Register</Link>
-                            <br/>
-                            <div id="title">Login</div>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Name"
-                                value={this.state.username}
-                                onChange={e => {
-                                    this.state.username = e.target.value;
-                                    this.setState(this.state);
-                                }}
-                            />
-                            <input 
-                                type="password" 
-                                className="form-control" 
-                                placeholder="Password"
-                                value={this.state.password}
-                                onChange={e => {
-                                    this.state.password = e.target.value;
-                                    this.setState(this.state);
-                                }}
-                                
-                            />
-                            <input 
-                                type="button" 
-                                value="Login"
-                                className="btn btn-block btn-primary"
-                                onClick={this.onSubmit}
-                            />
-                        </div>
+                    <div className="col-12 col-lg-4">
+                        <div id="title">
+                            <div>
+                                <div>Save a <b>life</b>,</div>
+                                <div>Donate <b>blood</b></div>
+                            </div>
+                        </div> 
+                        <Link id="registerBtn" className="btn btn-block" to='/register'>I want to donate</Link>
+                        <form onSubmit={this.onSubmit}>
+                            <div id="loginCnt">
+                                <div id="title">Login</div>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Name"
+                                    value={this.state.username}
+                                    onChange={e => {
+                                        this.state.username = e.target.value;
+                                        this.setState(this.state);
+                                    }}
+                                />
+                                <input 
+                                    type="password" 
+                                    className="form-control" 
+                                    placeholder="Password"
+                                    value={this.state.password}
+                                    onChange={e => {
+                                        this.state.password = e.target.value;
+                                        this.setState(this.state);
+                                    }}
+                                    
+                                />
+                                <input 
+                                    type="submit" 
+                                    value="Login"
+                                    className="btn btn-block btn-primary"
+                                />
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div id="content">
-                    Meaningful content right here
-                </div>
                 <div id="footer">
-                    <div>Created by</div>
-                    <div>Ratiu Cosmina, Iulia Robas, Lung Andreea, Popa Catalin, Prisacariu Alexandru, Muscala Andrei</div>
+                    <div>
+                        <div>Created by</div>
+                        <div>Ratiu Cosmina, Iulia Robas, Lung Andreea, Popa Catalin, Prisacariu Alexandru, Muscala Andrei</div>
+                    </div>
+                    <div>
+                        All rights reserved.
+                    </div>
                 </div>
             </div>
         ]

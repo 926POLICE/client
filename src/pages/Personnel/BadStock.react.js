@@ -110,7 +110,7 @@ class DoctorAvailableStocksPage extends React.Component {
                                         }</td>
                                         <td>{row.shelflife} days</td>
                                         <td>{row.donationid}</td>
-                                        <td><button className="btn btn-primary" onClick={() => this.dispose(row.id, index)}>Dispose</button></td>
+                                        <td><button className="btn mainBtn" onClick={() => this.dispose(row.id, index)}>Dispose</button></td>
                                     </tr>
                                 )
                             })

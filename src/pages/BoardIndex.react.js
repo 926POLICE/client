@@ -11,6 +11,9 @@ import TopBar from 'components/TopBar.react';
 
 import createNotification from 'utils/createNotification.js';
 
+import AjaxUtils from 'utils/AjaxUtils.js';
+import serverUrls from '../data/serverUrls';
+
 class BoardIndexPage extends React.Component {
     constructor(props) {
         super(props);
@@ -35,13 +38,28 @@ class BoardIndexPage extends React.Component {
         if (this.props.location.state && this.props.location.state.refresh) {
             window.location.reload();
         }
+
+        if (!this.props.location.pathname.startsWith('/board/personnel')) {
+            const self = this;
+            AjaxUtils.request("GET", serverUrls.donors.getPersonalDetails + '/' + this.props.match.params.userID)
+                .then(data => {
+                    self.state.name = data.name;
+                    self.setState(self.state);
+                })
+                .catch(req => {
+
+                })
+        } else {
+            this.state.name = "admin";
+            this.setState(this.state);
+        }
     }
 
     render() {
         return this.displayBlock && 
         [
             this.state.notificationBlock,
-            <TopBar key="topBar" userName={this.userName}/>,
+            <TopBar key="topBar" name={this.state.name || ""}/>,
             <this.displayBlock
                 key="displayBlock"
                 createNotification={(level, message, time) => {

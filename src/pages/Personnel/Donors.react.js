@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
-import LibraryLoader from 'utils/LibraryLoader';
 import AjaxUtils from 'utils/AjaxUtils.js';
 
 import serverUrls from 'data/serverUrls';
@@ -85,13 +84,13 @@ class DonorsPage extends React.Component {
                                         <td>
                                             <Link 
                                                 key="editBtn" 
-                                                className="btn btn-warning"
+                                                className="btn mainBtn"
                                                 to={{
                                                     pathname: `/board/personnel/donors/edit/${row.id}/` + this.props.match.params.userID,
                                                     state: { display: 'DONORS_EDIT' }
                                                 }}
                                             >
-                                                <FontAwesomeIcon icon={faPencil}/>
+                                                Edit
                                             </Link>
                                         </td>
                                     </tr>

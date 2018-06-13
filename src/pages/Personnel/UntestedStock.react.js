@@ -44,7 +44,7 @@ class DoctorAvailableStocksPage extends React.Component {
     testBlood(isGood, stockID, index) {
         const self = this;
         
-        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), isGood)
+        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), false)
             .then(() => {
                 self.state.data.splice(index, 1);
                 self.setState(self.state);
@@ -77,7 +77,7 @@ class DoctorAvailableStocksPage extends React.Component {
     render() {
         return [
             <Helmet key="helmet">
-                <link rel="stylesheet" href="css/stocks.min.css"/>
+                <link rel="stylesheet" href="css/untestedStocks.min.css"/>
             </Helmet>,
             <div key="main" id="mainCnt">
                 <div id="title">Blood stocks</div>
@@ -103,7 +103,7 @@ class DoctorAvailableStocksPage extends React.Component {
 
                                 return (
                                     <tr key={`r${index}`}>
-                                        <td>{}
+                                        <td>
                                             {
                                                 this.state.editIndex != index
                                                 ?
@@ -132,7 +132,12 @@ class DoctorAvailableStocksPage extends React.Component {
                                                     className="form-control"
                                                     value={this.state.form.quantity} 
                                                     onChange={e => { 
-                                                        this.state.form.quantity = parseInt(e.target.value) || 1;
+                                                        this.state.form.quantity = parseInt(e.target.value) || this.state.data[this.state.editIndex].quantity;
+
+                                                        if (this.state.form.quantity > this.state.data[this.state.editIndex].quantity) {
+                                                            this.state.form.quantity = this.state.data[this.state.editIndex].quantity;
+                                                        }
+
                                                         this.setState(this.state);
                                                     }}
                                                 />
@@ -175,8 +180,8 @@ class DoctorAvailableStocksPage extends React.Component {
                                             {
                                                 this.state.editIndex != index
                                                 &&
-                                                <div>
-                                                    <button className="btn btn-success" onClick={() => this.testBlood(true, row.id, index)}>Good</button>
+                                                <div style={{display: 'flex', flexWrap: 'nowrap'}}>
+                                                    <button className="btn mainBtn" style={{marginRight: ".5rem"}} onClick={() => this.testBlood(true, row.id, index)}>Good</button>
                                                     <button className="btn btn-danger" onClick={() => this.testBlood(false, row.id, index)}>Bad</button>
                                                 </div>
                                             }
@@ -186,7 +191,7 @@ class DoctorAvailableStocksPage extends React.Component {
                                                 this.state.editIndex != index
                                                 ?
                                                 <button 
-                                                    className="btn btn-warning" 
+                                                    className="btn mainBtn" 
                                                     onClick={() => {
                                                         this.state.form = Object.assign({}, row);
                                                         this.state.editIndex = index;
@@ -196,9 +201,10 @@ class DoctorAvailableStocksPage extends React.Component {
                                                     Edit
                                                 </button>
                                                 :
-                                                <div>
+                                                <div style={{display: 'flex', flexWrap: 'nowrap'}}>
                                                     <button
-                                                        className="btn btn-success"
+                                                        className="btn mainBtn"
+                                                        style={{marginRight: ".5rem"}}
                                                         onClick={() => this.save(index)}
                                                     >
                                                         Save

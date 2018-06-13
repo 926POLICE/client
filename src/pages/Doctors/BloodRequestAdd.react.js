@@ -105,7 +105,7 @@ class BloodRequestAddPage extends React.Component {
                     <div id="title">Add a blood request</div>
                     <div id="buttonsCnt">
                         <button 
-                            className="btn btn-success"
+                            className="btn mainBtn"
                             onClick={() => {
                                 if (this.state.form.redCells == 0 && this.state.form.thrombocytes == 0 && this.state.form.bloodPlasma == 0) {
                                     this.state.notificationBlock = createNotification("danger", "You must fill the required quantity", 3000);
@@ -135,7 +135,7 @@ class BloodRequestAddPage extends React.Component {
                                 <input 
                                     key={`urgencyLevels${level.level}`}
                                     type="button" 
-                                    className={`btn btn-selectable ${this.state.form.urgencyLevel == level.level ? "btn-selected" : "btn-notselected"}`} 
+                                    className={`btn btn-selectable ${this.state.form.urgencyLevel == level.level ? "mainBtn" : "btn-notselected"}`} 
                                     value={level.text}
                                     onClick={() => {
                                         this.state.form.urgencyLevel = level.level;
@@ -224,7 +224,7 @@ class BloodRequestAddPage extends React.Component {
                 <div>Blood plasma: {this.state.form.bloodPlasma}ml</div>
                 <div id="buttonCnt">
                     <button 
-                        className="btn btn-success"
+                        className="btn mainBtn"
                         onClick={this.onSubmit}
                     >
                         Yes

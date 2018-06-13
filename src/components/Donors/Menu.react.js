@@ -13,6 +13,7 @@ export default class DonorsMenu extends React.Component {
                 <MenuItem to={'/board/donors/donate/' + this.props.userID} display='DONATE'>Donate</MenuItem>
                 <MenuItem to={'/board/donors/settings/' + this.props.userID} display='SETTINGS'>Settings</MenuItem>
                 <MenuItem to={'/board/donors/history/' + this.props.userID} display='HISTORY'>Analysis History</MenuItem>
+                <MenuItem to={'/board/donors/medicalhistory/' + this.props.userID} display='MHISTORY'>Medical History</MenuItem>
                 {/* <MenuItem to='/board/donors/template' display='TEMPLATE'>Template</MenuItem> */}
             </Menu>
         )

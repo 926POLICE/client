@@ -47,7 +47,7 @@ AjaxUtils.request = function(type, url, data) {
         };
         xhttp.responseType = "json";
 
-        if (data) {
+        if (data !== undefined && data !== null) {
             if (type == 'GET') {
                 xhttp.open(type, url + "?_=" + Date.now() + serializeObject('', data), true);
                 xhttp.send();

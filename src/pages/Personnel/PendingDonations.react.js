@@ -17,7 +17,7 @@ class DoctorAvailableStocksPage extends React.Component {
 
         this.state = {
             data: [],
-            donors: {},
+            donors: null,
 
             isLoading: true
         }
@@ -40,6 +40,7 @@ class DoctorAvailableStocksPage extends React.Component {
 
         AjaxUtils.request("GET", serverUrls.personnel.getDonors())
             .then(data => {
+                self.state.donors = {};
                 for (var i=0, length=data.length; i < length; ++i) {
                     self.state.donors[data[i].id] = data[i];
                 }
@@ -62,8 +63,9 @@ class DoctorAvailableStocksPage extends React.Component {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>PatientID</th>
-                            <th>Patient</th>
+                            <th>DonorID</th>
+                            <th>Donor</th>
+                            <th>For a specific patient?</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -72,12 +74,12 @@ class DoctorAvailableStocksPage extends React.Component {
                             this.state.isLoading
                             ?
                             <tr>
-                                <td colSpan={4} style={{textAlign: "center"}}>
+                                <td colSpan={5} style={{textAlign: "center"}}>
                                     <FontAwesomeIcon icon={faSpinner} size='3x' spin/>
                                 </td>
                             </tr>
                             :
-                            (this.state.data.length > 0)
+                            (this.state.data.length > 0 && this.state.donors)
                             ?
                             this.state.data.map((row, index) => {
                                 const date = new Date(row.date);
@@ -85,28 +87,42 @@ class DoctorAvailableStocksPage extends React.Component {
                                 return (
                                     <tr key={`r${index}`}>
                                         <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
-                                        <td>{row.id}</td>
+                                        <td>{row.donorid}</td>
                                         <td>{this.state.donors[row.donorid] && this.state.donors[row.donorid].name}</td>
-                                        <td>
-                                            <Link 
-                                                className="btn btn-success"
-                                                to={{
-                                                    pathname: `/board/personnel/pendingdonations/edit/${row.id}/${this.props.match.params.userID}`,
-                                                    state: {
-                                                        display: "PENDING_DONATIONS_EDIT",
-                                                        donorName: this.state.donors[row.donorid] && this.state.donors[row.donorid].name
-                                                    }
-                                                }}
-                                            >
-                                                Set results
-                                            </Link>
-                                        </td>
+                                        <td>{ row.patientid == -1 ? "No" : "Yes" }</td>
+                                        {
+                                            !this.state.donors[row.donorid].eligibility
+                                            ?
+                                            <td>Not eligible</td>
+                                            :
+                                            (
+                                                !this.state.donors[row.donorid].bloodtype
+                                                ?
+                                                <td>First complete the medical settings</td>
+                                                :
+                                                <td style={{textAlign: "right", paddingRight: "10px"}}>
+                                                    <Link 
+                                                        className="btn mainBtn"
+                                                        style={{paddingLeft: "30px", paddingRight: "30px"}}
+                                                        to={{
+                                                            pathname: `/board/personnel/pendingdonations/edit/${row.id}/${this.props.match.params.userID}`,
+                                                            state: {
+                                                                display: "PENDING_DONATIONS_EDIT",
+                                                                donorName: this.state.donors[row.donorid] && this.state.donors[row.donorid].name
+                                                            }
+                                                        }}
+                                                    >
+                                                        Set results
+                                                    </Link>
+                                                </td>
+                                            )
+                                        }
                                     </tr>
                                 )
                             })
                             :
                             <tr>
-                                <td colSpan={4} style={{textAlign: "center"}}>No pending donations</td>
+                                <td colSpan={5} style={{textAlign: "center"}}>No pending donations</td>
                             </tr>
                         }
                     </tbody>

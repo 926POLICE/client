@@ -1,58 +1,123 @@
 @import "global.less";
+@import 'variables.less';
+@import 'register.less';
 
 #main {
     height: 100%;
+    background-color: #0051a3;
 }
 
 #rootCnt {
     display: flex;
     flex-direction: column;
     height: 100%;
-
-    > div:not(:last-child) {
-        border-bottom: 1px solid #b3b3b3;
-    }
-}
-
-#content {
-    flex: 1;
 }
 
 #footer {
     display: flex;
-    background-color: #ff5454;
+    align-items: flex-end;
     padding: .5rem;
-    flex-direction: column;
-    align-items: center;
+    padding-bottom: 0;
+    justify-content: space-between;
+    color: #ffffffc7;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.88;
 }
 
 #slide1 {
-    background-color: #ff5454;
+    flex: 1;
     margin: 0;
 
-    #loginCnt {
-        padding: 0;
+    > div {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         padding: 1rem 0;
+        margin: 0 auto;
+        min-width: 500px;
+        margin-top: 5%;
+        align-items: center;
 
-        >div {
+        > #title {
+            display: flex;
+            justify-content: center;
+
+            > div {
+                display: flex;
+                flex-direction: column;
+                text-shadow: 4px 4px rgba(0, 0, 0, 0.16);
+                font-size: 56px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: bold;
+                color: #fff;
+
+                b {
+                    color: #ff7d7d;
+                }
+
+                > div:first-child {
+                    text-align: left;
+                }
+    
+                > div:last-child {
+                    padding-left: 112px;
+                }
+            }
+        }
+
+        > #registerBtn, button, input[type=button], input[type=submit] {
+            background-color: #006ad5;
+            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+            color: #fff;
+            border: 0;
+
+            &:hover {
+                background-color: #0b68c5;
+            }
+        }
+
+        > #registerBtn {
+            padding: 0;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 28px;
+            letter-spacing: 3px;
             width: 100%;
-            max-width: 300px;
+            max-width: 400px;
+        }
+
+        > form {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #loginCnt {
+            margin-top: 2rem;
             padding: .5rem;
+            width: 100%;
             background-color: #00000063;
-            border-radius: .6rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 3px 6px 0 rgba(0,0,0,0.16);
 
             * {
                 margin-bottom: .5rem;
             }
 
-            #title {
+            > #title {
+                font-family: 'Poppins', sans-serif;
                 color: #fff;
                 text-align: center;
-                font-size: 1.25rem;
+                font-size: 30px;
                 font-weight: bold;
-                letter-spacing: 2px;
+                letter-spacing: 5px;
+            }
+
+            input[type=button] {
+                font-size: 22px;
+                font-weight: bold;
+                padding: 5px;
             }
         }
     }
