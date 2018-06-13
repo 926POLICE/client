@@ -44,7 +44,7 @@ class DoctorAvailableStocksPage extends React.Component {
     testBlood(isGood, stockID, index) {
         const self = this;
         
-        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), false)
+        AjaxUtils.request("POST", serverUrls.personnel.testBlood(stockID), isGood)
             .then(() => {
                 self.state.data.splice(index, 1);
                 self.setState(self.state);
