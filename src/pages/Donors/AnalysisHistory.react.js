@@ -32,9 +32,11 @@ class PacientAnalysisHistoryPage extends React.Component {
 
                 for (var i=0, length=self.state.data.length; i < length; ++i) {
                     if (self.state.data[i].patientid != -1) {
-                        AjaxUtils.request('GET', serverUrls.checkCompatibility(), { patientid: self.state.data[i].patientid, donorid: this.props.match.params.userID })
+                        const index = i;
+                        AjaxUtils.request('POST', serverUrls.checkCompatibility(), { patientid: self.state.data[i].patientid, donorid: this.props.match.params.userID })
                             .then(data => {
-                                self.state.data[i].compatible = data;
+                                self.state.data[index].compatible = data;
+                                console.log(index, self.state.data[index].compatible)
                                 self.setState(self.state);
                             })
                             .catch(req => {
@@ -73,11 +75,12 @@ class PacientAnalysisHistoryPage extends React.Component {
                             ?
                             this.state.data.map((row, index) => {
                                 const date = new Date(row.date);
+                                console.log(index, row.compatible)
                                 return (
-                                    <tr key={`r${index}`} className={row.analysisResult ? "goodAnalysis" : "badAnalysis"}>
+                                    <tr key={`r${index}`} className={row.analysisresult ? "goodAnalysis" : "badAnalysis"}>
                                         <td>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</td>
                                         <td>{ row.compatible === undefined ? "" : (row.compatible ? "Yes" : "No") }</td>
-                                        <td>{row.analysisResult ? "Good" : "Bad"}</td>
+                                        <td>{row.analysisresult ? "Good" : "Bad"}</td>
                                     </tr>
                                 )
                             })

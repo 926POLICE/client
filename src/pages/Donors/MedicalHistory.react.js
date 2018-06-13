@@ -67,7 +67,7 @@ class MedicalHistory extends React.Component {
                     <form onSubmit={this.onSubmit}>
                         <div>
                             <div className="row">
-                                <div className="col-3">Do you have anything to say?:</div>    
+                                <div className="col-3">Past medical conditions?</div>    
                                 <div className="col-9">
                                     <input 
                                         type="text"
